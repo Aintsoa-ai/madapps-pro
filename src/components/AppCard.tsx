@@ -1,4 +1,5 @@
 import type { App } from '../types/database.types';
+import { Link } from 'react-router-dom';
 
 interface AppCardProps {
   app: App;
@@ -6,7 +7,8 @@ interface AppCardProps {
 
 export default function AppCard({ app }: AppCardProps) {
   return (
-    <div className="bg-gray-800 rounded-2xl overflow-hidden hover:bg-gray-750 transition duration-300 border border-gray-700/50 hover:border-indigo-500/50 group cursor-pointer shadow-lg hover:shadow-indigo-500/10">
+    <Link to={`/app/${app.slug}`} className="block">
+      <div className="bg-gray-800 rounded-2xl overflow-hidden hover:bg-gray-750 transition duration-300 border border-gray-700/50 hover:border-indigo-500/50 group cursor-pointer shadow-lg hover:shadow-indigo-500/10">
       <div className="aspect-[2/1] w-full overflow-hidden relative">
         {/* Fallback image si pas de banner */}
         <img 
@@ -37,11 +39,12 @@ export default function AppCard({ app }: AppCardProps) {
           <span className="text-xs font-medium px-2.5 py-1 bg-indigo-500/20 text-indigo-400 rounded-full">
              {app.categories?.name || 'Général'}
           </span>
-          <button className="text-sm font-semibold bg-gray-700 hover:bg-indigo-600 text-white px-4 py-1.5 rounded-full transition-colors">
+          <span className="text-sm font-semibold bg-gray-700 group-hover:bg-indigo-600 text-white px-4 py-1.5 rounded-full transition-colors">
             Voir
-          </button>
+          </span>
         </div>
       </div>
     </div>
+    </Link>
   );
 }

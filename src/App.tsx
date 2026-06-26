@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import AppDetails from './pages/AppDetails';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* On ajoutera ici les routes vers les fiches détails plus tard */}
+        <Route path="/app/:slug" element={<AppDetails />} />
       </Routes>
     </Router>
   );

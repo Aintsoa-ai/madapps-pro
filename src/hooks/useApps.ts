@@ -32,3 +32,34 @@ export function useApps() {
 
   return { apps, loading, error };
 }
+
+export function useAppDetails(slug: string | undefined) {
+  const [app, setApp] = useState<App | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchApp() {
+      if (!slug) return;
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('apps')
+          .select('*, categories(name)')
+          .eq('slug', slug)
+          .single();
+
+        if (error) throw error;
+        setApp(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchApp();
+  }, [slug]);
+
+  return { app, loading, error };
+}
