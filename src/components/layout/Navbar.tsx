@@ -1,5 +1,5 @@
 import { Search, Menu, User } from 'lucide-react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
@@ -55,9 +55,9 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center cursor-pointer hover:bg-gray-700 transition">
+            <Link to="/admin/dashboard" className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center cursor-pointer hover:bg-gray-700 transition" title="Espace Administrateur">
               <User className="h-5 w-5 text-gray-300" />
-            </div>
+            </Link>
           </div>
         </div>
       </div>

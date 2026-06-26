@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS apps (
   full_description text,
   icon_url text,
   banner_url text,
+  apk_url text,
   developer_name text DEFAULT 'MadApps',
   featured boolean DEFAULT false,
   status text DEFAULT 'published',

@@ -32,19 +32,23 @@ export function useCreateApp() {
     return publicUrlData.publicUrl;
   };
 
-  const createApp = async (formData: AppFormData, iconFile: File | null, bannerFile: File | null) => {
+  const createApp = async (formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null) => {
     try {
       setLoading(true);
       setError(null);
 
       let icon_url = '';
       let banner_url = '';
+      let apk_url = '';
 
       if (iconFile) {
         icon_url = await uploadFile(iconFile, 'icons');
       }
       if (bannerFile) {
         banner_url = await uploadFile(bannerFile, 'banners');
+      }
+      if (apkFile) {
+        apk_url = await uploadFile(apkFile, 'apps');
       }
 
       const { error: insertError } = await supabase.from('apps').insert([
@@ -57,6 +61,7 @@ export function useCreateApp() {
           category_id: formData.category_id,
           icon_url,
           banner_url,
+          apk_url,
           status: 'published',
         },
       ]);

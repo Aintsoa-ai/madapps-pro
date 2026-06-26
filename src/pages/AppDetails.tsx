@@ -62,10 +62,17 @@ export default function AppDetails() {
             </div>
 
             <div className="w-full md:w-auto mt-4 md:mt-0 pb-2">
-               <button className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                 <Download className="w-5 h-5" />
-                 Télécharger
-               </button>
+              {app.apk_url ? (
+                <a href={app.apk_url} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                  <Download className="w-5 h-5" />
+                  Télécharger
+                </a>
+              ) : (
+                <button disabled className="w-full md:w-auto bg-gray-700 text-gray-400 font-bold py-3 px-8 rounded-full cursor-not-allowed flex items-center justify-center gap-2">
+                  <Download className="w-5 h-5" />
+                  Bientôt disponible
+                </button>
+              )}
             </div>
           </div>
         </div>

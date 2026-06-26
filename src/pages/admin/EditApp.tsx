@@ -24,6 +24,7 @@ export default function EditApp() {
 
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [apkFile, setApkFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (app) {
@@ -48,7 +49,7 @@ export default function EditApp() {
     e.preventDefault();
     if (!formData.category_id) return alert('Veuillez choisir une catégorie');
     
-    const success = await updateApp(app.id, formData, iconFile, bannerFile, app.icon_url || '', app.banner_url || '');
+    const success = await updateApp(app.id, formData, iconFile, bannerFile, apkFile, app.icon_url || '', app.banner_url || '', app.apk_url || '');
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -134,6 +135,16 @@ export default function EditApp() {
               <span className="text-sm text-gray-400">{bannerFile ? bannerFile.name : 'Remplacer l\'image'}</span>
             </div>
             {app.banner_url && <img src={app.banner_url} className="mt-2 h-12 w-auto rounded-lg object-cover" alt="Current banner" />}
+          </div>
+        </div>
+
+        <div className="border-t border-gray-700 pt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Remplacer le fichier de l'application (.apk)</label>
+          <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
+            <input type="file" accept=".apk" onChange={(e) => setApkFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <Upload className="w-8 h-8 text-indigo-500 mb-2" />
+            <span className="font-medium text-white">{apkFile ? apkFile.name : 'Uploader un nouveau fichier APK'}</span>
+            {!apkFile && app.apk_url && <span className="text-sm text-green-400 mt-2 text-center bg-green-500/10 px-3 py-1 rounded-full">Un fichier est déjà en ligne. Uploadez uniquement pour le remplacer.</span>}
           </div>
         </div>
 

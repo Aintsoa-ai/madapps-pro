@@ -14,6 +14,7 @@ export interface App {
   full_description: string | null;
   icon_url: string | null;
   banner_url: string | null;
+  apk_url: string | null;
   developer_name: string;
   featured: boolean;
   status: string;

@@ -24,19 +24,23 @@ export function useEditApp() {
     return publicUrlData.publicUrl;
   };
 
-  const updateApp = async (id: string, formData: AppFormData, iconFile: File | null, bannerFile: File | null, existingIcon: string, existingBanner: string) => {
+  const updateApp = async (id: string, formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, existingIcon: string, existingBanner: string, existingApk: string) => {
     try {
       setLoading(true);
       setError(null);
 
       let icon_url = existingIcon;
       let banner_url = existingBanner;
+      let apk_url = existingApk;
 
       if (iconFile) {
         icon_url = await uploadFile(iconFile, 'icons');
       }
       if (bannerFile) {
         banner_url = await uploadFile(bannerFile, 'banners');
+      }
+      if (apkFile) {
+        apk_url = await uploadFile(apkFile, 'apps');
       }
 
       const { error: updateError } = await supabase.from('apps').update({
@@ -48,6 +52,7 @@ export function useEditApp() {
         category_id: formData.category_id,
         icon_url,
         banner_url,
+        apk_url,
       }).eq('id', id);
 
       if (updateError) {

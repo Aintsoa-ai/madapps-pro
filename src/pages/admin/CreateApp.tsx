@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateApp } from '../../hooks/useCreateApp';
 import type { AppFormData } from '../../hooks/useCreateApp';
 import { useCategories } from '../../hooks/useCategories';
-import { ArrowLeft, Upload, Loader2 } from 'lucide-react';
+import { ArrowLeft, Upload, Loader2, Download } from 'lucide-react';
 
 export default function CreateApp() {
   const navigate = useNavigate();
@@ -21,12 +21,14 @@ export default function CreateApp() {
 
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [apkFile, setApkFile] = useState<File | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.category_id) return alert('Veuillez choisir une catégorie');
+    if (!apkFile) return alert('Veuillez uploader le fichier APK de l\'application');
     
-    const success = await createApp(formData, iconFile, bannerFile);
+    const success = await createApp(formData, iconFile, bannerFile, apkFile);
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -105,12 +107,22 @@ export default function CreateApp() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Bannière (Image paysage)</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Bannière (Optionnel)</label>
             <div className="border-2 border-dashed border-gray-700 rounded-lg p-4 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
               <input type="file" accept="image/*" onChange={(e) => setBannerFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               <Upload className="w-6 h-6 text-gray-500 mb-2" />
-              <span className="text-sm text-gray-400">{bannerFile ? bannerFile.name : 'Choisir un fichier'}</span>
+              <span className="text-sm text-gray-400">{bannerFile ? bannerFile.name : 'Choisir une image'}</span>
             </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-700 pt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Fichier de l'application (.apk) *</label>
+          <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
+            <input required type="file" accept=".apk" onChange={(e) => setApkFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <Download className="w-10 h-10 text-indigo-500 mb-3" />
+            <span className="text-lg font-medium text-white mb-1">{apkFile ? apkFile.name : 'Uploader le fichier APK'}</span>
+            <span className="text-sm text-gray-400">Taille maximale recommandée : 100 Mo</span>
           </div>
         </div>
 
