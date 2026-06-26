@@ -19,7 +19,7 @@ export function useCreateApp() {
     const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
     const filePath = `${path}/${fileName}`;
 
-    const { error: uploadError, data } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('media')
       .upload(filePath, file);
 
@@ -61,7 +61,12 @@ export function useCreateApp() {
         },
       ]);
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        if (insertError.code === '23505') {
+          throw new Error("Une application avec ce même nom (ou URL) existe déjà. Veuillez choisir un autre nom.");
+        }
+        throw insertError;
+      }
       return true; // Succès
     } catch (err: any) {
       setError(err.message);

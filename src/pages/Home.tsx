@@ -2,9 +2,22 @@ import Navbar from '../components/layout/Navbar';
 import AppCard from '../components/AppCard';
 import { useApps } from '../hooks/useApps';
 import { Loader2 } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Home() {
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('q') || '';
   const { apps, loading, error } = useApps();
+
+  const filteredApps = apps.filter(app => {
+    if (!searchQuery) return true;
+    const term = searchQuery.toLowerCase().replace(/[-_]/g, ' ');
+    const title = app.title.toLowerCase().replace(/[-_]/g, ' ');
+    const shortDesc = (app.short_description || '').toLowerCase();
+    const dev = (app.developer_name || '').toLowerCase();
+    
+    return title.includes(term) || shortDesc.includes(term) || dev.includes(term);
+  });
 
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans">
@@ -44,13 +57,13 @@ export default function Home() {
             <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl text-center">
               Une erreur est survenue lors du chargement des applications.
             </div>
-          ) : apps.length === 0 ? (
+          ) : filteredApps.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
-              Aucune application disponible pour le moment.
+              Aucune application ne correspond à votre recherche.
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {apps.map(app => (
+              {filteredApps.map(app => (
                 <AppCard key={app.id} app={app} />
               ))}
             </div>

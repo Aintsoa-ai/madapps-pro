@@ -11,7 +11,6 @@ export function useApps() {
     async function fetchApps() {
       try {
         setLoading(true);
-        // On récupère les applications avec leurs catégories associées
         const { data, error } = await supabase
           .from('apps')
           .select('*, categories(name)')

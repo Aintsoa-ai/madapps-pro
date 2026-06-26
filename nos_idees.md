@@ -10,8 +10,11 @@
 - [x] Création de la Page d'Accueil dynamique avec TailwindCSS.
 - [x] Création du schéma SQL (apps et categories) et injection de données de test.
 - [x] Création de la Page de Détails de l'application (Routing React).
+- [x] Création de l'espace Administrateur (Auth, Dashboard).
+- [x] Configuration de Supabase Storage pour les images.
+- [x] Formulaire d'ajout de nouvelles applications avec upload d'images.
 
-## Ce qui reste à accomplir (Idées et Tâches)
+## Ce qui reste à accomplir (Idées et Tâches pour la V2)
 - [ ] Mettre en place un système de "debouncing" pour la barre de recherche.
-- [ ] Connecter Supabase Storage pour l'hébergement réel des bannières et icônes.
-- [ ] Créer l'espace Administrateur (Auth) pour l'ajout de nouvelles applications.
+- [ ] Implémenter la fonctionnalité "Modifier" et "Supprimer" sur le tableau de bord admin.
+- [ ] Ajouter un système de pagination pour le catalogue d'applications.

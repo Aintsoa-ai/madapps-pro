@@ -4,6 +4,7 @@ import AppDetails from './pages/AppDetails';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import CreateApp from './pages/admin/CreateApp';
+import EditApp from './pages/admin/EditApp';
 import AdminLayout from './components/layout/AdminLayout';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="apps/new" element={<CreateApp />} />
+          <Route path="apps/edit/:slug" element={<EditApp />} />
         </Route>
       </Routes>
     </Router>

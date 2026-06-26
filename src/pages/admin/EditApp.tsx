@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCreateApp } from '../../hooks/useCreateApp';
-import type { AppFormData } from '../../hooks/useCreateApp';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEditApp } from '../../hooks/useEditApp';
 import { useCategories } from '../../hooks/useCategories';
+import { useAppDetails } from '../../hooks/useApps';
 import { ArrowLeft, Upload, Loader2 } from 'lucide-react';
+import type { AppFormData } from '../../hooks/useCreateApp';
 
-export default function CreateApp() {
+export default function EditApp() {
   const navigate = useNavigate();
-  const { createApp, loading, error } = useCreateApp();
+  const { slug } = useParams<{ slug: string }>();
+  const { app, loading: loadingApp } = useAppDetails(slug);
+  const { updateApp, loading, error } = useEditApp();
   const { categories } = useCategories();
 
   const [formData, setFormData] = useState<AppFormData>({
@@ -15,18 +18,37 @@ export default function CreateApp() {
     slug: '',
     short_description: '',
     full_description: '',
-    developer_name: 'MadApps',
+    developer_name: '',
     category_id: '',
   });
 
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
 
+  useEffect(() => {
+    if (app) {
+      setFormData({
+        title: app.title || '',
+        slug: app.slug || '',
+        short_description: app.short_description || '',
+        full_description: app.full_description || '',
+        developer_name: app.developer_name || '',
+        category_id: app.category_id || '',
+      });
+    }
+  }, [app]);
+
+  if (loadingApp) {
+    return <div className="text-center py-20"><Loader2 className="w-8 h-8 animate-spin mx-auto text-indigo-500" /></div>;
+  }
+
+  if (!app) return <div className="text-center py-20 text-white">Application introuvable</div>;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.category_id) return alert('Veuillez choisir une catégorie');
     
-    const success = await createApp(formData, iconFile, bannerFile);
+    const success = await updateApp(app.id, formData, iconFile, bannerFile, app.icon_url || '', app.banner_url || '');
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -42,7 +64,7 @@ export default function CreateApp() {
         <button onClick={() => navigate('/admin/dashboard')} className="p-2 hover:bg-gray-800 rounded-lg transition">
           <ArrowLeft className="w-5 h-5 text-gray-400" />
         </button>
-        <h1 className="text-3xl font-bold text-white">Ajouter une application</h1>
+        <h1 className="text-3xl font-bold text-white">Modifier l'application</h1>
       </div>
 
       {error && (
@@ -52,7 +74,6 @@ export default function CreateApp() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-gray-800 p-8 rounded-2xl border border-gray-700">
-        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Titre de l'application *</label>
@@ -97,26 +118,28 @@ export default function CreateApp() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-700 pt-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Icône (Image carrée)</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Nouvelle Icône (Optionnel)</label>
             <div className="border-2 border-dashed border-gray-700 rounded-lg p-4 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
               <input type="file" accept="image/*" onChange={(e) => setIconFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               <Upload className="w-6 h-6 text-gray-500 mb-2" />
-              <span className="text-sm text-gray-400">{iconFile ? iconFile.name : 'Choisir un fichier'}</span>
+              <span className="text-sm text-gray-400">{iconFile ? iconFile.name : 'Remplacer l\'image'}</span>
             </div>
+            {app.icon_url && <img src={app.icon_url} className="mt-2 w-12 h-12 rounded-lg object-cover" alt="Current icon" />}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Bannière (Image paysage)</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Nouvelle Bannière (Optionnel)</label>
             <div className="border-2 border-dashed border-gray-700 rounded-lg p-4 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
               <input type="file" accept="image/*" onChange={(e) => setBannerFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               <Upload className="w-6 h-6 text-gray-500 mb-2" />
-              <span className="text-sm text-gray-400">{bannerFile ? bannerFile.name : 'Choisir un fichier'}</span>
+              <span className="text-sm text-gray-400">{bannerFile ? bannerFile.name : 'Remplacer l\'image'}</span>
             </div>
+            {app.banner_url && <img src={app.banner_url} className="mt-2 h-12 w-auto rounded-lg object-cover" alt="Current banner" />}
           </div>
         </div>
 
         <div className="pt-6 border-t border-gray-700 flex justify-end">
           <button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg transition disabled:opacity-50 flex items-center gap-2">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Publier l\'application'}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Enregistrer les modifications'}
           </button>
         </div>
       </form>

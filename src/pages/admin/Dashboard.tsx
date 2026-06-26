@@ -1,9 +1,23 @@
 import { useApps } from '../../hooks/useApps';
-import { Plus, Edit, Trash2, Smartphone } from 'lucide-react';
+import { useDeleteApp } from '../../hooks/useDeleteApp';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { apps, loading } = useApps();
+  const { deleteApp } = useDeleteApp();
+
+  const handleDelete = async (id: string, title: string) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer l'application "${title}" ? Cette action est irréversible.`)) {
+      const success = await deleteApp(id);
+      if (success) {
+        // Rafraîchir la page ou recharger la liste (solution simple pour l'MVP)
+        window.location.reload();
+      } else {
+        alert("Une erreur est survenue lors de la suppression.");
+      }
+    }
+  };
 
   return (
     <div>
@@ -42,7 +56,7 @@ export default function Dashboard() {
                 apps.map((app) => (
                   <tr key={app.id} className="border-b border-gray-700 hover:bg-gray-750 transition">
                     <td className="px-6 py-4 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gray-700 overflow-hidden">
+                      <div className="w-10 h-10 rounded-lg bg-gray-700 overflow-hidden shrink-0">
                         <img src={app.icon_url || ''} alt="" className="w-full h-full object-cover" />
                       </div>
                       <div>
@@ -60,10 +74,10 @@ export default function Dashboard() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-3">
-                        <button className="text-gray-400 hover:text-indigo-400 transition" title="Modifier">
+                        <Link to={`/admin/apps/edit/${app.slug}`} className="text-gray-400 hover:text-indigo-400 transition" title="Modifier">
                           <Edit className="w-4 h-4" />
-                        </button>
-                        <button className="text-gray-400 hover:text-red-400 transition" title="Supprimer">
+                        </Link>
+                        <button onClick={() => handleDelete(app.id, app.title)} className="text-gray-400 hover:text-red-400 transition" title="Supprimer">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
