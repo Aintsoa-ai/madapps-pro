@@ -7,8 +7,8 @@ interface AppCardProps {
 
 export default function AppCard({ app }: AppCardProps) {
   return (
-    <Link to={`/app/${app.slug}`} className="block">
-      <div className="bg-gray-800 rounded-2xl overflow-hidden hover:bg-gray-750 transition duration-300 border border-gray-700/50 hover:border-indigo-500/50 group cursor-pointer shadow-lg hover:shadow-indigo-500/10">
+    <Link to={`/app/${app.slug}`} className="block h-full">
+      <div className="bg-gray-800 rounded-2xl overflow-hidden hover:bg-gray-750 transition duration-300 border border-gray-700/50 hover:border-indigo-500/50 group cursor-pointer shadow-lg hover:shadow-indigo-500/10 h-full flex flex-col">
       <div className="aspect-[2/1] w-full overflow-hidden relative">
         {/* Fallback image si pas de banner */}
         <img 
@@ -33,8 +33,8 @@ export default function AppCard({ app }: AppCardProps) {
         </div>
       </div>
       
-      <div className="px-5 pb-5">
-        <p className="text-gray-300 text-sm line-clamp-2">{app.short_description}</p>
+      <div className="px-5 pb-5 flex flex-col flex-1">
+        <p className="text-gray-300 text-sm line-clamp-2 flex-1">{app.short_description}</p>
         <div className="mt-4 flex items-center justify-between">
           <span className="text-xs font-medium px-2.5 py-1 bg-indigo-500/20 text-indigo-400 rounded-full">
              {app.categories?.name || 'Général'}

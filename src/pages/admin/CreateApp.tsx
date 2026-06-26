@@ -22,13 +22,16 @@ export default function CreateApp() {
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [apkFile, setApkFile] = useState<File | null>(null);
+  const [apkType, setApkType] = useState<'upload' | 'link'>('link');
+  const [externalApkUrl, setExternalApkUrl] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.category_id) return alert('Veuillez choisir une catégorie');
-    if (!apkFile) return alert('Veuillez uploader le fichier APK de l\'application');
+    if (apkType === 'upload' && !apkFile) return alert('Veuillez uploader le fichier APK de l\'application');
+    if (apkType === 'link' && !externalApkUrl) return alert('Veuillez fournir le lien de téléchargement');
     
-    const success = await createApp(formData, iconFile, bannerFile, apkFile);
+    const success = await createApp(formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, apkType === 'link' ? externalApkUrl : '');
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -117,13 +120,28 @@ export default function CreateApp() {
         </div>
 
         <div className="border-t border-gray-700 pt-6">
-          <label className="block text-sm font-medium text-gray-300 mb-2">Fichier de l'application (.apk) *</label>
-          <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
-            <input required type="file" accept=".apk" onChange={(e) => setApkFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-            <Download className="w-10 h-10 text-indigo-500 mb-3" />
-            <span className="text-lg font-medium text-white mb-1">{apkFile ? apkFile.name : 'Uploader le fichier APK'}</span>
-            <span className="text-sm text-gray-400">Taille maximale recommandée : 100 Mo</span>
+          <div className="flex justify-between items-center mb-4">
+            <label className="block text-sm font-medium text-gray-300">Fichier de l'application (.apk) *</label>
+            <div className="flex bg-gray-900 rounded-lg p-1 border border-gray-700">
+              <button type="button" onClick={() => setApkType('link')} className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${apkType === 'link' ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:text-white'}`}>Lien Externe</button>
+              <button type="button" onClick={() => setApkType('upload')} className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${apkType === 'upload' ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:text-white'}`}>Uploader (Max 50Mo)</button>
+            </div>
           </div>
+
+          {apkType === 'link' ? (
+            <div>
+              <input required type="url" placeholder="Ex: https://drive.google.com/..." value={externalApkUrl} onChange={(e) => setExternalApkUrl(e.target.value)}
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg p-4 text-white focus:ring-2 focus:ring-indigo-500" />
+              <p className="text-gray-400 text-sm mt-2">Collez ici le lien Google Drive, MediaFire, ou autre lien direct vers votre APK.</p>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
+              <input required type="file" accept=".apk" onChange={(e) => setApkFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+              <Download className="w-10 h-10 text-indigo-500 mb-3" />
+              <span className="text-lg font-medium text-white mb-1">{apkFile ? apkFile.name : 'Uploader le fichier APK'}</span>
+              <span className="text-sm text-gray-400">Taille maximale autorisée : 50 Mo</span>
+            </div>
+          )}
         </div>
 
         <div className="pt-6 border-t border-gray-700 flex justify-end">

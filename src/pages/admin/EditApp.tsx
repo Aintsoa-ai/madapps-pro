@@ -25,6 +25,8 @@ export default function EditApp() {
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [apkFile, setApkFile] = useState<File | null>(null);
+  const [apkType, setApkType] = useState<'upload' | 'link'>('link');
+  const [externalApkUrl, setExternalApkUrl] = useState('');
 
   useEffect(() => {
     if (app) {
@@ -36,6 +38,12 @@ export default function EditApp() {
         developer_name: app.developer_name || '',
         category_id: app.category_id || '',
       });
+      if (app.apk_url && app.apk_url.startsWith('http') && !app.apk_url.includes('supabase.co')) {
+        setApkType('link');
+        setExternalApkUrl(app.apk_url);
+      } else if (app.apk_url) {
+        setApkType('upload');
+      }
     }
   }, [app]);
 
@@ -48,8 +56,14 @@ export default function EditApp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.category_id) return alert('Veuillez choisir une catégorie');
+    if (apkType === 'link' && !externalApkUrl && !app.apk_url) return alert('Veuillez fournir le lien de téléchargement');
     
-    const success = await updateApp(app.id, formData, iconFile, bannerFile, apkFile, app.icon_url || '', app.banner_url || '', app.apk_url || '');
+    let finalExternalUrl = '';
+    if (apkType === 'link') {
+      finalExternalUrl = externalApkUrl;
+    }
+    
+    const success = await updateApp(app.id, formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, finalExternalUrl, app.icon_url || '', app.banner_url || '', app.apk_url || '');
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -139,13 +153,28 @@ export default function EditApp() {
         </div>
 
         <div className="border-t border-gray-700 pt-6">
-          <label className="block text-sm font-medium text-gray-300 mb-2">Remplacer le fichier de l'application (.apk)</label>
-          <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
-            <input type="file" accept=".apk" onChange={(e) => setApkFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-            <Upload className="w-8 h-8 text-indigo-500 mb-2" />
-            <span className="font-medium text-white">{apkFile ? apkFile.name : 'Uploader un nouveau fichier APK'}</span>
-            {!apkFile && app.apk_url && <span className="text-sm text-green-400 mt-2 text-center bg-green-500/10 px-3 py-1 rounded-full">Un fichier est déjà en ligne. Uploadez uniquement pour le remplacer.</span>}
+          <div className="flex justify-between items-center mb-4">
+            <label className="block text-sm font-medium text-gray-300">Remplacer le fichier de l'application (.apk)</label>
+            <div className="flex bg-gray-900 rounded-lg p-1 border border-gray-700">
+              <button type="button" onClick={() => setApkType('link')} className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${apkType === 'link' ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:text-white'}`}>Lien Externe</button>
+              <button type="button" onClick={() => setApkType('upload')} className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${apkType === 'upload' ? 'bg-indigo-600 text-white' : 'text-gray-400 hover:text-white'}`}>Uploader (Max 50Mo)</button>
+            </div>
           </div>
+
+          {apkType === 'link' ? (
+            <div>
+              <input type="url" placeholder="Ex: https://drive.google.com/..." value={externalApkUrl} onChange={(e) => setExternalApkUrl(e.target.value)}
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg p-4 text-white focus:ring-2 focus:ring-indigo-500" />
+              <p className="text-gray-400 text-sm mt-2">Collez ici le lien Google Drive ou autre. {app.apk_url && !app.apk_url.includes('supabase.co') && 'Un lien est déjà enregistré.'}</p>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
+              <input type="file" accept=".apk" onChange={(e) => setApkFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+              <Upload className="w-8 h-8 text-indigo-500 mb-2" />
+              <span className="font-medium text-white">{apkFile ? apkFile.name : 'Uploader un nouveau fichier APK'}</span>
+              {!apkFile && app.apk_url && app.apk_url.includes('supabase.co') && <span className="text-sm text-green-400 mt-2 text-center bg-green-500/10 px-3 py-1 rounded-full">Un fichier est déjà hébergé sur Supabase.</span>}
+            </div>
+          )}
         </div>
 
         <div className="pt-6 border-t border-gray-700 flex justify-end">

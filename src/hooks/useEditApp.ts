@@ -24,14 +24,14 @@ export function useEditApp() {
     return publicUrlData.publicUrl;
   };
 
-  const updateApp = async (id: string, formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, existingIcon: string, existingBanner: string, existingApk: string) => {
+  const updateApp = async (id: string, formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, externalApkUrl: string, existingIcon: string, existingBanner: string, existingApk: string) => {
     try {
       setLoading(true);
       setError(null);
 
       let icon_url = existingIcon;
       let banner_url = existingBanner;
-      let apk_url = existingApk;
+      let apk_url = externalApkUrl || existingApk;
 
       if (iconFile) {
         icon_url = await uploadFile(iconFile, 'icons');

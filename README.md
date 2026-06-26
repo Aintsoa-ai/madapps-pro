@@ -1,32 +1,38 @@
-# React + TypeScript + Vite
+# MadApps Pro
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+**MadApps Pro** est une plateforme professionnelle de distribution d'applications. Elle permet aux utilisateurs de découvrir, de télécharger, de noter et de commenter des applications, tout en offrant aux administrateurs un tableau de bord complet pour gérer le catalogue et analyser les statistiques.
 
-Currently, two official plugins are available:
+## Fonctionnalités Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Pour les Membres (Utilisateurs)
+- **Catalogue d'Applications** : Liste des applications disponibles triées par catégories.
+- **Détails de l'Application** : Page dédiée avec bannière, icône, description complète et captures d'écran.
+- **Authentification Unifiée** : Inscription par email/mot de passe ou via **Google (OAuth)**. L'authentification est requise pour interagir avec les applications.
+- **Téléchargement Direct** : Les liens Google Drive sont convertis en liens de téléchargement directs.
+- **Statistiques en Temps Réel** : Compteurs visibles pour les Vues (👁️) et les Téléchargements (⬇️).
+- **Système de Notation (Avis)** : Les membres peuvent laisser un commentaire et attribuer une note (de 1 à 5 étoiles) à une application.
+- **Votes (J'aime / Je n'aime pas)** : Système de vote unique par utilisateur pour évaluer rapidement une application.
+- **Contact Admin** : Un bouton flottant permet aux membres d'envoyer des messages directs à l'administrateur de la plateforme.
 
-## React Compiler
+### Pour l'Administrateur
+- **Tableau de Bord Privé** : Espace sécurisé pour gérer les applications.
+- **Gestion du Catalogue** : Ajout, modification et suppression d'applications avec upload d'images directement sur le serveur.
+- **Tri Intelligent** : Les applications sont automatiquement classées par popularité (nombre de téléchargements).
+- **Statistiques Globales** : Suivi des visiteurs quotidiens, du total des téléchargements et gestion des messages entrants envoyés par les membres.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies Utilisées
+- **Frontend** : React 19, TypeScript, Tailwind CSS, Lucide React (Icônes).
+- **Backend & Base de Données** : Supabase (PostgreSQL, Authentication, Storage).
+- **Architecture** : Clean Architecture, séparation des préoccupations avec Custom Hooks.
 
-## Expanding the Oxlint configuration
+## Démarrage Rapide
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+1. Installez les dépendances :
+   ```bash
+   npm install
+   ```
+2. Lancez le serveur de développement (accessible sur réseau local) :
+   ```bash
+   npm run dev -- --host
+   ```
+3. L'application est disponible sur `http://localhost:5173`.

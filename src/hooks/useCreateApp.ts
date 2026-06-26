@@ -32,14 +32,14 @@ export function useCreateApp() {
     return publicUrlData.publicUrl;
   };
 
-  const createApp = async (formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null) => {
+  const createApp = async (formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, externalApkUrl: string = '') => {
     try {
       setLoading(true);
       setError(null);
 
       let icon_url = '';
       let banner_url = '';
-      let apk_url = '';
+      let apk_url = externalApkUrl;
 
       if (iconFile) {
         icon_url = await uploadFile(iconFile, 'icons');

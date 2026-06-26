@@ -21,5 +21,9 @@ export interface App {
   category_id: string | null;
   created_at: string;
   updated_at: string;
+  views_count?: number;
+  downloads_count?: number;
+  likes_count?: number;
+  dislikes_count?: number;
   categories?: Category; // Relation
 }
