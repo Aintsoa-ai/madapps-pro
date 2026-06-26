@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { App } from '../types/database.types';
+import type { App } from '../types/database.types';
 
 export function useApps() {
   const [apps, setApps] = useState<App[]>([]);

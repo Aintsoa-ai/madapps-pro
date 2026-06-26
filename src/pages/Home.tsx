@@ -1,4 +1,3 @@
-import React from 'react';
 import Navbar from '../components/layout/Navbar';
 import AppCard from '../components/AppCard';
 import { useApps } from '../hooks/useApps';

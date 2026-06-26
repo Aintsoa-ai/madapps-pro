@@ -1,5 +1,4 @@
-import React from 'react';
-import { App } from '../../types/database.types';
+import type { App } from '../types/database.types';
 
 interface AppCardProps {
   app: App;
