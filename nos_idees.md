@@ -7,9 +7,11 @@
 - [x] Initialiser le repository Git et faire un premier commit de sauvegarde.
 - [x] Scaffolder l'application React avec Vite (`npm create vite@latest`).
 - [x] Initialiser le projet Supabase et connecter l'application React.
+- [x] Création de la Page d'Accueil dynamique avec TailwindCSS.
+- [x] Création du schéma SQL (apps et categories) et injection de données de test.
+- [x] Création de la Page de Détails de l'application (Routing React).
 
 ## Ce qui reste à accomplir (Idées et Tâches)
-- [ ] Réfléchir à une interface inspirée du Google Play Store pour grands écrans.
-- [ ] Implémenter un système de thème sombre/clair pour un design premium.
-- [ ] Prévoir un composant de carrousel performant pour les captures d'écran des applications.
 - [ ] Mettre en place un système de "debouncing" pour la barre de recherche.
+- [ ] Connecter Supabase Storage pour l'hébergement réel des bannières et icônes.
+- [ ] Créer l'espace Administrateur (Auth) pour l'ajout de nouvelles applications.
