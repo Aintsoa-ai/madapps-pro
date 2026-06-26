@@ -1,5 +1,6 @@
 import { useApps } from '../../hooks/useApps';
 import { Plus, Edit, Trash2, Smartphone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { apps, loading } = useApps();
@@ -11,10 +12,10 @@ export default function Dashboard() {
           <h1 className="text-3xl font-bold text-white">Tableau de bord</h1>
           <p className="text-gray-400 mt-1">Gérez votre catalogue d'applications publiques.</p>
         </div>
-        <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-lg transition flex items-center gap-2">
+        <Link to="/admin/apps/new" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-lg transition flex items-center gap-2">
           <Plus className="w-5 h-5" />
           Nouvelle application
-        </button>
+        </Link>
       </div>
 
       <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">

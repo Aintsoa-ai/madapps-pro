@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import AppDetails from './pages/AppDetails';
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
+import CreateApp from './pages/admin/CreateApp';
 import AdminLayout from './components/layout/AdminLayout';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="apps/new" element={<CreateApp />} />
         </Route>
       </Routes>
     </Router>
