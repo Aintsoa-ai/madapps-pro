@@ -234,7 +234,7 @@ export default function Navbar() {
                 <Menu className="h-6 w-6" />
               </button>
               <Link to="/" className="text-xl font-medium text-gray-700 flex items-center gap-2">
-                <img src="/logo.png" alt="MadaStack Logo" className="h-8 w-8 object-contain rounded-lg drop-shadow-md" />
+                <img src="/logo.png" alt="MadaStack Logo" className="h-10 w-10 object-contain rounded-xl drop-shadow-md" />
                 MadaStack
               </Link>
             
