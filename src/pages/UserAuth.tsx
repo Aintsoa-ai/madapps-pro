@@ -61,19 +61,19 @@ export default function UserAuth() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white font-sans">
+    <div className="min-h-screen bg-white text-gray-900 font-sans">
       <Navbar />
       
       <div className="max-w-md mx-auto pt-24 px-4">
-        <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl">
+        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
           <div className="text-center mb-8">
-            <div className="bg-indigo-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <UserIcon className="w-8 h-8 text-indigo-500" />
+            <div className="bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <UserIcon className="w-8 h-8 text-indigo-600" />
             </div>
             <h1 className="text-2xl font-bold">
               {isLogin ? 'Connexion requise' : 'Créer un compte'}
             </h1>
-            <p className="text-gray-400 mt-2 text-sm">
+            <p className="text-gray-500 mt-2 text-sm">
               {isLogin 
                 ? 'Connectez-vous pour télécharger et noter nos applications.' 
                 : 'Rejoignez la communauté AintStore.'}
@@ -81,21 +81,21 @@ export default function UserAuth() {
           </div>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded-xl mb-6 text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleAuth} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                   placeholder="votre@email.com"
                   required
                 />
@@ -103,21 +103,21 @@ export default function UserAuth() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Mot de passe</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-10 text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                   placeholder="••••••••"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -127,7 +127,7 @@ export default function UserAuth() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2 mt-6"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 mt-6"
             >
               {loading && <Loader2 className="w-5 h-5 animate-spin" />}
               {isLogin ? 'Se connecter' : 'S\'inscrire'}
@@ -135,14 +135,14 @@ export default function UserAuth() {
           </form>
 
           <div className="mt-6 flex items-center justify-between">
-            <span className="border-b border-gray-700 w-1/5 lg:w-1/4"></span>
+            <span className="border-b border-gray-200 w-1/5 lg:w-1/4"></span>
             <span className="text-xs text-center text-gray-500 uppercase">Ou continuer avec</span>
-            <span className="border-b border-gray-700 w-1/5 lg:w-1/4"></span>
+            <span className="border-b border-gray-200 w-1/5 lg:w-1/4"></span>
           </div>
 
           <button
             onClick={handleGoogleLogin}
-            className="w-full bg-white hover:bg-gray-100 text-gray-900 font-bold py-3 px-4 rounded-xl shadow transition-colors flex items-center justify-center gap-3 mt-6"
+            className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold py-3 px-4 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-3 mt-6"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -153,11 +153,11 @@ export default function UserAuth() {
             Google
           </button>
 
-          <div className="mt-6 text-center text-sm text-gray-400">
+          <div className="mt-6 text-center text-sm text-gray-500">
             {isLogin ? "Pas encore membre ?" : "Déjà un compte ?"}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="ml-2 text-indigo-400 hover:text-indigo-300 font-medium"
+              className="ml-2 text-indigo-600 hover:text-indigo-700 font-medium"
             >
               {isLogin ? "S'inscrire" : "Se connecter"}
             </button>
