@@ -12,7 +12,7 @@ import AppComments from '../components/app-details/AppComments';
 import ContactAdminModal from '../components/app-details/ContactAdminModal';
 
 // Fonction utilitaire pour convertir les liens Google Drive en téléchargement direct
-const getDirectDownloadUrl = (url: string) => {
+const getDirectDownloadUrl = (url: string | null | undefined) => {
   if (!url) return url;
   const driveRegex = /https:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view/;
   const match = url.match(driveRegex);
@@ -72,7 +72,7 @@ export default function AppDetails() {
     );
   }
 
-  const downloadUrl = getDirectDownloadUrl(app.apk_url);
+  const downloadUrl = getDirectDownloadUrl(app.apk_url) || '';
   const avgRating = comments.length > 0 ? (comments.reduce((acc, c) => acc + c.rating, 0) / comments.length).toFixed(1) : '5.0';
 
   return (
