@@ -53,8 +53,8 @@ export default function Dashboard() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Tableau de bord</h1>
-          <p className="text-gray-400 mt-1">Vue d'ensemble de votre plateforme.</p>
+          <h1 className="text-3xl font-bold text-gray-900">Tableau de bord</h1>
+          <p className="text-gray-500 mt-1">Vue d'ensemble de votre plateforme.</p>
         </div>
         <Link to="/admin/apps/new" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-lg transition flex items-center gap-2">
           <Plus className="w-5 h-5" />
@@ -63,38 +63,38 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 flex items-center gap-4">
-          <div className="bg-indigo-500/20 p-4 rounded-xl"><Users className="w-8 h-8 text-indigo-400" /></div>
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="bg-indigo-50 p-4 rounded-xl"><Users className="w-8 h-8 text-indigo-600" /></div>
           <div>
-            <div className="text-sm text-gray-400">Visiteurs (Aujourd'hui)</div>
-            <div className="text-2xl font-bold text-white">{dailyVisitors}</div>
+            <div className="text-sm text-gray-500">Visiteurs (Aujourd'hui)</div>
+            <div className="text-2xl font-bold text-gray-900">{dailyVisitors}</div>
           </div>
         </div>
-        <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 flex items-center gap-4">
-          <div className="bg-green-500/20 p-4 rounded-xl"><Download className="w-8 h-8 text-green-400" /></div>
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="bg-green-50 p-4 rounded-xl"><Download className="w-8 h-8 text-green-600" /></div>
           <div>
-            <div className="text-sm text-gray-400">Total Téléchargements</div>
-            <div className="text-2xl font-bold text-white">{totalDownloads}</div>
+            <div className="text-sm text-gray-500">Total Téléchargements</div>
+            <div className="text-2xl font-bold text-gray-900">{totalDownloads}</div>
           </div>
         </div>
-        <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 flex items-center gap-4">
-          <div className="bg-orange-500/20 p-4 rounded-xl"><MessageSquare className="w-8 h-8 text-orange-400" /></div>
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="bg-orange-50 p-4 rounded-xl"><MessageSquare className="w-8 h-8 text-orange-600" /></div>
           <div>
-            <div className="text-sm text-gray-400">Messages reçus</div>
-            <div className="text-2xl font-bold text-white">{messages.length}</div>
+            <div className="text-sm text-gray-500">Messages reçus</div>
+            <div className="text-2xl font-bold text-gray-900">{messages.length}</div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Liste des applications (2 colonnes) */}
-        <div className="lg:col-span-2 bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">
-          <div className="p-6 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Top Applications</h2>
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Top Applications</h2>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-400">
-              <thead className="text-xs text-gray-500 uppercase bg-gray-900/50">
+            <table className="w-full text-left text-sm text-gray-600">
+              <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-4">Application</th>
                   <th className="px-6 py-4">Statistiques</th>
@@ -112,14 +112,14 @@ export default function Dashboard() {
                       : 'N/A';
 
                     return (
-                    <tr key={app.id} className="border-b border-gray-700 hover:bg-gray-750 transition">
+                    <tr key={app.id} className="border-b border-gray-100 hover:bg-gray-50 transition">
                       <td className="px-6 py-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gray-700 overflow-hidden shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
                           <img src={app.icon_url || ''} alt="" className="w-full h-full object-cover" />
                         </div>
                         <div>
-                          <div className="font-semibold text-white">{app.title}</div>
-                          <div className="text-xs">{app.categories?.name}</div>
+                          <div className="font-semibold text-gray-900">{app.title}</div>
+                          <div className="text-xs text-gray-500">{app.categories?.name}</div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -133,10 +133,10 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-3">
-                          <Link to={`/admin/apps/edit/${app.slug}`} className="text-gray-400 hover:text-indigo-400 transition" title="Modifier">
+                          <Link to={`/admin/apps/edit/${app.slug}`} className="text-gray-400 hover:text-indigo-600 transition" title="Modifier">
                             <Edit className="w-4 h-4" />
                           </Link>
-                          <button onClick={() => handleDelete(app.id, app.title)} className="text-gray-400 hover:text-red-400 transition" title="Supprimer">
+                          <button onClick={() => handleDelete(app.id, app.title)} className="text-gray-400 hover:text-red-600 transition" title="Supprimer">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -151,22 +151,22 @@ export default function Dashboard() {
         </div>
 
         {/* Liste des messages (1 colonne) */}
-        <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-gray-700 flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-white">Derniers Messages</h2>
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-900">Derniers Messages</h2>
           </div>
           <div className="p-4 space-y-4 overflow-y-auto max-h-[600px]">
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 py-8">Aucun message reçu.</div>
             ) : (
               messages.map(msg => (
-                <div key={msg.id} className="bg-gray-900/50 p-4 rounded-xl border border-gray-700">
+                <div key={msg.id} className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="font-semibold text-indigo-400 text-sm">{msg.profiles?.username || 'Membre'}</span>
+                    <span className="font-semibold text-indigo-600 text-sm">{msg.profiles?.username || 'Membre'}</span>
                     <span className="text-xs text-gray-500">{new Date(msg.created_at).toLocaleDateString('fr-FR')}</span>
                   </div>
-                  <div className="font-medium text-white mb-1 text-sm">{msg.subject}</div>
-                  <p className="text-gray-400 text-sm">{msg.content}</p>
+                  <div className="font-medium text-gray-900 mb-1 text-sm">{msg.subject}</div>
+                  <p className="text-gray-600 text-sm">{msg.content}</p>
                 </div>
               ))
             )}
