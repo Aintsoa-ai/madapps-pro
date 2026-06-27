@@ -3,20 +3,32 @@ import AppCard from '../components/AppCard';
 import { useApps } from '../hooks/useApps';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function Home() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
   const { apps, loading, error } = useApps();
+  const [selectedCategory, setSelectedCategory] = useState<string>('Toutes');
+
+  // Extraire les catégories uniques
+  const categories = ['Toutes', ...Array.from(new Set(apps.map(app => app.categories?.name).filter(Boolean)))];
 
   const filteredApps = apps.filter(app => {
-    if (!searchQuery) return true;
-    const term = searchQuery.toLowerCase().replace(/[-_]/g, ' ');
-    const title = app.title.toLowerCase().replace(/[-_]/g, ' ');
-    const shortDesc = (app.short_description || '').toLowerCase();
-    const dev = (app.developer_name || '').toLowerCase();
-    
-    return title.includes(term) || shortDesc.includes(term) || dev.includes(term);
+    // Filtre par recherche
+    const matchesSearch = (() => {
+      if (!searchQuery) return true;
+      const term = searchQuery.toLowerCase().replace(/[-_]/g, ' ');
+      const title = app.title.toLowerCase().replace(/[-_]/g, ' ');
+      const shortDesc = (app.short_description || '').toLowerCase();
+      const dev = (app.developer_name || '').toLowerCase();
+      return title.includes(term) || shortDesc.includes(term) || dev.includes(term);
+    })();
+
+    // Filtre par catégorie
+    const matchesCategory = selectedCategory === 'Toutes' || app.categories?.name === selectedCategory;
+
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -45,8 +57,28 @@ export default function Home() {
 
         {/* Section Catalogue */}
         <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Catalogue d'applications</h2>
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+            <div>
+              <h2 className="text-3xl font-bold text-white tracking-tight">Catalogue</h2>
+              <p className="text-gray-400 text-sm mt-1">{filteredApps.length} application{filteredApps.length > 1 ? 's' : ''}</p>
+            </div>
+            
+            {/* Filtres de catégories */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide">
+              {categories.map(category => (
+                <button
+                  key={category as string}
+                  onClick={() => setSelectedCategory(category as string)}
+                  className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    selectedCategory === category
+                      ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg'
+                      : 'bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700 hover:text-white'
+                  }`}
+                >
+                  {category as string}
+                </button>
+              ))}
+            </div>
           </div>
 
           {loading ? (
