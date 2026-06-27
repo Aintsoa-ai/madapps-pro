@@ -1,7 +1,8 @@
-import { Search, Menu, User, Bell, X, Check } from 'lucide-react';
+import { Search, Menu, User, Bell, X, Check, CheckCheck, MessageSquare } from 'lucide-react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { toast } from 'react-hot-toast';
 
 export default function Navbar() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,6 +12,12 @@ export default function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showInbox, setShowInbox] = useState(false);
   const [inboxMessages, setInboxMessages] = useState<any[]>([]);
+
+  // Reply state
+  const [replyingTo, setReplyingTo] = useState<any | null>(null);
+  const [replyContent, setReplyContent] = useState('');
+  const [isSendingReply, setIsSendingReply] = useState(false);
+  const [isTyping, setIsTyping] = useState(false); // Typing indicator state (stub for UI)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -44,6 +51,47 @@ export default function Navbar() {
     await supabase.from('messages').update({ is_read: true }).eq('id', msgId);
     if (user) fetchUserMessages(user.id);
   };
+
+  const handleReplyClick = (msg: any) => {
+    setReplyingTo(msg);
+    setReplyContent('');
+  };
+
+  const submitReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!replyingTo || !replyContent.trim() || !user) return;
+    
+    setIsSendingReply(true);
+    try {
+      const { error } = await supabase.from('messages').insert({
+        sender_id: user.id,
+        receiver_id: null, // null means it's for the Admin
+        subject: `Re: ${replyingTo.subject}`,
+        content: replyContent
+      });
+
+      if (error) throw error;
+      
+      setReplyingTo(null);
+      setReplyContent('');
+      toast.success("Votre réponse a été envoyée à l'administrateur !");
+    } catch (e) {
+      console.error(e);
+      toast.error("Erreur lors de l'envoi de la réponse.");
+    } finally {
+      setIsSendingReply(false);
+    }
+  };
+
+  // Simulate typing animation
+  useEffect(() => {
+    if (replyContent.length > 0) {
+      setIsTyping(true);
+      const timeout = setTimeout(() => setIsTyping(false), 2000);
+      return () => clearTimeout(timeout);
+    }
+    setIsTyping(false);
+  }, [replyContent]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -110,38 +158,93 @@ export default function Navbar() {
                 </button>
 
                 {showInbox && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                  <div className="absolute right-0 mt-2 w-80 md:w-96 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50">
                     <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                       <h3 className="font-semibold text-gray-900">Notifications</h3>
                       <button onClick={() => setShowInbox(false)} className="text-gray-400 hover:text-gray-600">
                         <X className="w-4 h-4" />
                       </button>
                     </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {inboxMessages.length === 0 ? (
-                        <div className="p-6 text-center text-sm text-gray-500">Aucun message de l'admin.</div>
-                      ) : (
-                        inboxMessages.map(msg => (
-                          <div key={msg.id} className={`p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!msg.is_read ? 'bg-indigo-50/30' : ''}`}>
-                            <div className="flex justify-between items-start mb-1">
-                              <span className="font-semibold text-sm text-gray-900">Admin MadApps Pro</span>
-                              <span className="text-xs text-gray-500">{new Date(msg.created_at).toLocaleDateString()}</span>
-                            </div>
-                            <div className="text-sm font-medium text-indigo-900 mb-1">{msg.subject}</div>
-                            <p className="text-xs text-gray-600 line-clamp-3 mb-2">{msg.content}</p>
-                            
-                            {!msg.is_read && (
-                              <button 
-                                onClick={() => markAsRead(msg.id)}
-                                className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1"
-                              >
-                                <Check className="w-3 h-3" /> Marquer comme lu
-                              </button>
+                    
+                    {replyingTo ? (
+                      <form onSubmit={submitReply} className="p-4 flex flex-col h-64">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs font-bold text-gray-500 uppercase">Répondre à l'Admin</span>
+                          <button type="button" onClick={() => setReplyingTo(null)} className="text-gray-400 hover:text-gray-600 text-xs flex items-center">
+                            <X className="w-3 h-3 mr-1" /> Annuler
+                          </button>
+                        </div>
+                        <div className="bg-gray-50 p-2 rounded-lg mb-3 text-xs text-gray-600 border border-gray-100 line-clamp-2 italic">
+                          "{replyingTo.content}"
+                        </div>
+                        <textarea
+                          value={replyContent}
+                          onChange={(e) => setReplyContent(e.target.value)}
+                          placeholder="Écrivez votre message..."
+                          className="flex-1 w-full bg-white border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none mb-3"
+                          required
+                        />
+                        <div className="flex items-center justify-between">
+                          <div className="h-4">
+                            {isTyping && (
+                              <div className="flex gap-1 items-center px-1">
+                                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                              </div>
                             )}
                           </div>
-                        ))
-                      )}
-                    </div>
+                          <button
+                            type="submit"
+                            disabled={isSendingReply || !replyContent.trim()}
+                            className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors flex items-center gap-2"
+                          >
+                            {isSendingReply ? 'Envoi...' : 'Envoyer'}
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <div className="max-h-96 overflow-y-auto">
+                        {inboxMessages.length === 0 ? (
+                          <div className="p-6 text-center text-sm text-gray-500">Aucun message de l'admin.</div>
+                        ) : (
+                          inboxMessages.map(msg => (
+                            <div key={msg.id} className={`p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!msg.is_read ? 'bg-indigo-50/30' : ''}`}>
+                              <div className="flex justify-between items-start mb-1">
+                                <span className="font-semibold text-sm text-gray-900 flex items-center gap-1">
+                                  Admin MadApps Pro
+                                </span>
+                                <span className="text-xs text-gray-500">{new Date(msg.created_at).toLocaleDateString()}</span>
+                              </div>
+                              <div className="text-sm font-medium text-indigo-900 mb-1">{msg.subject}</div>
+                              <p className="text-xs text-gray-600 line-clamp-3 mb-3">{msg.content}</p>
+                              
+                              <div className="flex items-center gap-4">
+                                {!msg.is_read ? (
+                                  <button 
+                                    onClick={() => markAsRead(msg.id)}
+                                    className="text-xs text-green-600 hover:text-green-700 font-medium flex items-center gap-1 bg-green-50 px-2 py-1 rounded"
+                                  >
+                                    <Check className="w-3 h-3" /> Marquer comme lu
+                                  </button>
+                                ) : (
+                                  <span className="text-xs text-green-500 font-medium flex items-center gap-1" title="Lu">
+                                    <CheckCheck className="w-4 h-4" /> Vu
+                                  </span>
+                                )}
+                                
+                                <button 
+                                  onClick={() => handleReplyClick(msg)}
+                                  className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 rounded transition"
+                                >
+                                  <MessageSquare className="w-3 h-3" /> Répondre
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

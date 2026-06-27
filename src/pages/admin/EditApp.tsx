@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { useEditApp } from '../../hooks/useEditApp';
 import { useCategories } from '../../hooks/useCategories';
 import { useAppDetails } from '../../hooks/useApps';
@@ -59,8 +60,8 @@ export default function EditApp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.category_id) return alert('Veuillez choisir une catégorie');
-    if (apkType === 'link' && !externalApkUrl && !app.apk_url) return alert('Veuillez fournir le lien de téléchargement');
+    if (!formData.category_id) return toast.error('Veuillez choisir une catégorie');
+    if (apkType === 'link' && !externalApkUrl && !app.apk_url) return toast.error('Veuillez fournir le lien de téléchargement');
     
     let finalExternalUrl = '';
     if (apkType === 'link') {
@@ -175,7 +176,7 @@ export default function EditApp() {
                 onChange={(e) => {
                   const files = Array.from(e.target.files || []);
                   if (existingScreenshots.length + files.length > 5) {
-                    alert(`Vous avez déjà ${existingScreenshots.length} images. Vous ne pouvez pas dépasser 5 au total.`);
+                    toast.error(`Vous avez déjà ${existingScreenshots.length} images. Vous ne pouvez pas dépasser 5 au total.`);
                     return;
                   }
                   setScreenshotFiles(files);

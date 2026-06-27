@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
+import { toast } from 'react-hot-toast';
 
 export function useAppInteractions(app: any | null, user: User | null) {
   const [comments, setComments] = useState<any[]>([]);
@@ -100,7 +101,7 @@ export function useAppInteractions(app: any | null, user: User | null) {
       fetchComments();
     } catch (e) {
       console.error(e);
-      alert("Erreur lors de la publication du commentaire.");
+      toast.error("Erreur lors de la publication du commentaire.");
     } finally {
       setIsSubmitting(false);
     }
@@ -138,7 +139,7 @@ export function useAppInteractions(app: any | null, user: User | null) {
       }, 3000);
     } catch (e) {
       console.error(e);
-      alert("Erreur lors de l'envoi du message.");
+      toast.error("Erreur lors de l'envoi du message.");
     } finally {
       setIsSendingMessage(false);
     }

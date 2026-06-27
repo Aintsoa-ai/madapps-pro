@@ -2,6 +2,7 @@ import { useApps } from '../../hooks/useApps';
 import { useDeleteApp } from '../../hooks/useDeleteApp';
 import { Plus, Edit, Trash2, Users, Download, Eye, MessageSquare, ThumbsUp, ThumbsDown, Star, X, TrendingUp, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
@@ -123,21 +124,45 @@ export default function Dashboard() {
       
       setReplyingTo(null);
       setReplyContent('');
-      alert("Réponse envoyée avec succès au membre !");
+      toast.success("Réponse envoyée avec succès au membre !");
     } catch (e: any) {
       console.error(e);
-      alert(`Erreur lors de l'envoi de la réponse : ${e.message || JSON.stringify(e)}`);
+      toast.error(`Erreur lors de l'envoi de la réponse : ${e.message || JSON.stringify(e)}`);
     } finally {
       setIsSendingReply(false);
     }
   };
 
   const handleDelete = async (id: string, title: string) => {
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer l'application "${title}" ? Cette action est irréversible.`)) {
-      const success = await deleteApp(id);
-      if (success) window.location.reload();
-      else alert("Une erreur est survenue lors de la suppression.");
-    }
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <p className="font-semibold text-gray-900">Confirmer la suppression</p>
+        <p className="text-sm text-gray-600">Êtes-vous sûr de vouloir supprimer l'application "{title}" ? Cette action est irréversible.</p>
+        <div className="flex gap-2 justify-end mt-2">
+          <button 
+            onClick={() => toast.dismiss(t.id)} 
+            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+          >
+            Annuler
+          </button>
+          <button 
+            onClick={async () => {
+              toast.dismiss(t.id);
+              const success = await deleteApp(id);
+              if (success) {
+                toast.success("Application supprimée avec succès.");
+                setTimeout(() => window.location.reload(), 1000);
+              } else {
+                toast.error("Une erreur est survenue lors de la suppression.");
+              }
+            }} 
+            className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700"
+          >
+            Supprimer
+          </button>
+        </div>
+      </div>
+    ), { duration: 10000, style: { minWidth: '300px' } });
   };
 
   const sortedApps = [...apps].sort((a, b) => ((b as any).downloads_count || 0) - ((a as any).downloads_count || 0));

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { useCreateApp } from '../../hooks/useCreateApp';
 import type { AppFormData } from '../../hooks/useCreateApp';
 import { useCategories } from '../../hooks/useCategories';
@@ -28,9 +29,9 @@ export default function CreateApp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.category_id) return alert('Veuillez choisir une catégorie');
-    if (apkType === 'upload' && !apkFile) return alert('Veuillez uploader le fichier APK de l\'application');
-    if (apkType === 'link' && !externalApkUrl) return alert('Veuillez fournir le lien de téléchargement');
+    if (!formData.category_id) return toast.error('Veuillez choisir une catégorie');
+    if (apkType === 'upload' && !apkFile) return toast.error('Veuillez uploader le fichier APK de l\'application');
+    if (apkType === 'link' && !externalApkUrl) return toast.error('Veuillez fournir le lien de téléchargement');
     
     const success = await createApp(formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, apkType === 'link' ? externalApkUrl : '', screenshotFiles);
     if (success) {
@@ -137,7 +138,7 @@ export default function CreateApp() {
               <input type="file" multiple accept="image/*" 
                 onChange={(e) => {
                   const files = Array.from(e.target.files || []);
-                  if (files.length > 5) alert('Maximum 5 images autorisées');
+                  if (files.length > 5) toast.error('Maximum 5 images autorisées');
                   setScreenshotFiles(files.slice(0, 5));
                 }} 
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />

@@ -10,6 +10,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import UserAuth from './pages/UserAuth';
 import { useEffect } from 'react';
 import { supabase } from './lib/supabase';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   useEffect(() => {
@@ -40,6 +41,13 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      }} />
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
