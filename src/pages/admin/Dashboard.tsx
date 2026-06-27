@@ -1,6 +1,6 @@
 import { useApps } from '../../hooks/useApps';
 import { useDeleteApp } from '../../hooks/useDeleteApp';
-import { Plus, Edit, Trash2, Users, Download, Eye, MessageSquare, ThumbsUp, ThumbsDown, Star } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, Download, Eye, MessageSquare, ThumbsUp, ThumbsDown, Star, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -278,38 +278,60 @@ export default function Dashboard() {
 
       {/* Admin Reply Modal */}
       {replyingTo && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-gray-800 rounded-2xl w-full max-w-md border border-gray-700 shadow-2xl overflow-hidden">
-            <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h3 className="text-xl font-bold text-white">Répondre à {replyingTo.profiles?.username}</h3>
-              <button onClick={() => setReplyingTo(null)} className="text-gray-400 hover:text-white transition-colors">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+        <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden border border-gray-100 transform transition-all">
+            <div className="flex justify-between items-center p-6 border-b border-gray-100 bg-gray-50/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
+                  {replyingTo.profiles?.username?.charAt(0).toUpperCase() || 'M'}
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 leading-tight">Répondre à {replyingTo.profiles?.username}</h3>
+                  <p className="text-xs text-gray-500">Message reçu le {new Date(replyingTo.created_at).toLocaleDateString('fr-FR')}</p>
+                </div>
+              </div>
+              <button onClick={() => setReplyingTo(null)} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-colors">
+                <X className="w-5 h-5" />
               </button>
             </div>
             
-            <form onSubmit={submitReply} className="p-6 space-y-4">
-              <div className="bg-gray-900/50 p-3 rounded-lg border border-gray-700 mb-4">
-                <div className="text-xs text-gray-400 mb-1">Message original :</div>
-                <div className="text-sm text-gray-300 italic">"{replyingTo.content}"</div>
+            <form onSubmit={submitReply} className="p-6">
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-6 relative">
+                <div className="absolute -left-3 top-4 w-6 h-6 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-sm">
+                  <MessageSquare className="w-3 h-3 text-gray-400" />
+                </div>
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 ml-4">Message original</div>
+                <div className="text-sm text-gray-700 italic ml-4">"{replyingTo.content}"</div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Votre réponse</label>
-                <textarea
-                  value={replyContent}
-                  onChange={e => setReplyContent(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 px-4 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none min-h-[120px]"
-                  placeholder="Écrivez votre réponse ici..."
-                  required
-                ></textarea>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Votre réponse</label>
+                  <textarea
+                    value={replyContent}
+                    onChange={e => setReplyContent(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl py-3 px-4 text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none min-h-[140px] resize-none transition-all shadow-sm placeholder-gray-400"
+                    placeholder={`Rédigez votre message pour ${replyingTo.profiles?.username}...`}
+                    required
+                  ></textarea>
+                </div>
+                <div className="flex justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setReplyingTo(null)}
+                    className="px-6 py-2.5 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSendingReply || !replyContent.trim()}
+                    className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:text-gray-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  >
+                    {isSendingReply ? 'Envoi en cours...' : 'Envoyer la réponse'}
+                  </button>
+                </div>
               </div>
-              <button
-                type="submit"
-                disabled={isSendingReply || !replyContent.trim()}
-                className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded-xl shadow transition-colors flex items-center justify-center gap-2 mt-4"
-              >
-                {isSendingReply ? 'Envoi...' : 'Envoyer la réponse'}
-              </button>
             </form>
           </div>
         </div>
