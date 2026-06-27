@@ -43,6 +43,7 @@ export default function AppDetails() {
     messageContent,
     setMessageContent,
     isSendingMessage,
+    messageSuccess,
     handleDownload,
     handleVote,
     handlePostComment,
