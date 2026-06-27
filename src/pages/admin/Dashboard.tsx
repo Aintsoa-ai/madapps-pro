@@ -393,8 +393,16 @@ export default function Dashboard() {
                 profiles.slice(0, 10).map((profile) => (
                   <tr key={profile.id} className="border-b border-gray-100 hover:bg-gray-50 transition">
                     <td className="px-6 py-4 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
-                        {profile.username?.charAt(0).toUpperCase() || 'A'}
+                      <div className="relative w-10 h-10 rounded-full shrink-0 flex items-center justify-center font-bold text-indigo-600 border border-gray-200 bg-indigo-50">
+                        {profile.avatar_url ? (
+                          <img src={profile.avatar_url} alt={profile.username} className="w-full h-full rounded-full object-cover" />
+                        ) : (
+                          profile.username?.charAt(0).toUpperCase() || 'A'
+                        )}
+                        {/* Point vert pour simuler la présence en ligne (basé sur l'ID pour rester stable) */}
+                        {(parseInt(profile.id.substring(0, 8), 16) % 3 !== 0) && (
+                          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                        )}
                       </div>
                       <div className="font-semibold text-gray-900">{profile.username || 'Anonyme'}</div>
                     </td>
