@@ -34,10 +34,16 @@
 - [x] Formulaire de contact pour envoyer des messages à l'admin.
 - [x] Mise à jour du Dashboard admin avec les statistiques journalières et classement par popularité.
 
-## Phase 5 : Polissage et Mise en Production (À venir)
-- [ ] **Refactoring Clean Architecture** : Découpage des gros composants (`AppDetails.tsx`) en sous-composants réutilisables et extraction de la logique dans de nouveaux custom hooks (`useComments`, `useStats`).
+## Phase 5 : Polissage et Mise en Production (En cours)
+- [x] Ajout d'une barre de recherche performante avec filtrage instantané.
+- [x] Optimisation UI globale (Mode sombre géré, scrollbars custom).
+- [x] Déploiement en production (Vercel).
+- [ ] **Refactoring Clean Architecture** : Découpage des gros composants (`AppDetails.tsx`, `Dashboard.tsx`) en sous-composants réutilisables et extraction de la logique dans de nouveaux custom hooks (`useComments`, `useStats`).
+- [ ] Lier les actions de téléchargement avec une table `user_downloads` pour historique.
 - [ ] Édition et suppression des applications existantes dans le Dashboard admin.
-- [ ] Ajout d'une barre de recherche performante avec debounce.
 - [ ] Implémentation d'une pagination pour optimiser les performances.
 - [ ] Configuration de la sécurité (Row Level Security) sur Supabase pour la production.
-- [ ] Déploiement (Vercel ou équivalent).
+
+## Phase 6 : Fonctionnalités Avancées (Prochaines Étapes)
+- [ ] **Assistant Cognitif Administrateur (IA)** : Intégration d'un module intelligent dans le dashboard pour assister la gestion de la plateforme.
+- [ ] Système de messagerie temps réel avec indicateurs de lecture/écriture (style WhatsApp).

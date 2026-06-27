@@ -13,21 +13,18 @@
 - Manque de pagination pour les applications sur la page d'accueil et les commentaires.
 - La création de profil automatique via OAuth Google n'est pas encore sécurisée par un Trigger SQL natif.
 
-## Ce qui a été fait (Aujourd'hui)
-- [x] Renommage complet de la plateforme en **AintStore**.
-- [x] Ajout de l'œil sur les mots de passe (visibilité toggle).
-- [x] Ajout de la règle de Clean Architecture (Séparation stricte UI/Logique, 150-200 lignes max).
-- [x] Ajout du script SQL (`supabase_schema_v3.sql`) pour ajouter le support de plusieurs captures d'écran (`text[]`).
-- [x] Implémentation complète de l'upload multiple (Max 5 images) dans le Dashboard Admin (`CreateApp.tsx` et `EditApp.tsx`).
-- [x] Affichage dynamique de la galerie de captures d'écran dans `AppDetails.tsx`.
-- [x] Masquage complet de la scrollbar horizontale native pour la galerie d'images.
-- [x] Personnalisation de la scrollbar globale (fine, foncée, discrète).
-- [x] Correction de l'erreur TypeScript liée aux accolades dans le ternaire.
+## Ce qui a été fait (Aujourd'hui - 27 Juin 2026)
+- [x] Refonte UI & Navigation : Mise en place d'un menu latéral (Sidebar) pour accéder au Profil, Mes Téléchargements, Paramètres, et Aide.
+- [x] Accessibilité : Correction de la visibilité des textes (text-gray-900) pour contrer les modes sombres forcés sur mobile.
+- [x] Optimisation de Stockage : Remplacement de l'upload d'avatar par un "Sélecteur visuel d'Avatars" (DiceBear) pour économiser la mémoire de Supabase et accélérer le chargement.
+- [x] Authentification : Réintégration parfaite des boutons Google & Facebook, et résolution du bug `validation_failed` et `upsert` (`full_name`/`updated_at`).
+- [x] Fonctionnalité : Ajout d'une barre de recherche professionnelle et dynamique sur la page d'accueil (Recherche par titre, développeur, description courte).
+- [x] Dashboard Admin : Mise à jour de la table des membres pour afficher l'Avatar, le Pseudo, et une pastille verte "En ligne" (style Facebook/Messenger).
+- [x] Déploiements Continus : Le projet a été testé, buildé (`vite build`) et déployé avec succès sur Vercel à chaque étape clé.
 
 ## Ce qui reste à accomplir (Idées pour la suite)
-- [ ] **Règle du Boy Scout** : Refactoriser `AppDetails.tsx` (actuellement plus de 430 lignes) en sous-composants (`<AppBanner />`, `<AppStats />`, `<ScreenshotGallery />`, `<CommentSection />`) AVANT d'y ajouter la moindre nouvelle fonctionnalité.
-- [ ] Extraire les appels Supabase de `AppDetails.tsx` dans un nouveau hook `useAppInteractions.ts`.
-- [ ] Mettre en place un système de "debouncing" pour la barre de recherche.
-- [ ] Implémenter la fonctionnalité "Modifier" et "Supprimer" sur le tableau de bord admin.
-- [ ] Ajouter un système de pagination pour le catalogue d'applications.
-- [ ] Créer un Trigger SQL sur `auth.users` pour générer automatiquement la ligne dans `profiles`.
+- [ ] **Règle du Boy Scout & Clean Architecture (Urgent)** : Refactoriser `AppDetails.tsx` (plus de 430 lignes) et `Dashboard.tsx` (plus de 470 lignes) en sous-composants (`<AppBanner />`, `<CommentSection />`, `<UserList />`) AVANT d'y ajouter la moindre nouvelle fonctionnalité.
+- [ ] **Intelligence Cognitive (IA)** : Intégrer la vision d'un "Assistant Cognitif IA" dans le Dashboard Administrateur pour analyser les téléchargements et pré-trier le support client.
+- [ ] Mettre en place un vrai système de "debouncing" pour la barre de recherche.
+- [ ] Lier la page "Mes Téléchargements" à une nouvelle table `user_downloads` pour que l'utilisateur voie ses applications.
+- [ ] Ajouter la messagerie instantanée "En train d'écrire" / "Lu" (style WhatsApp) comme demandé par l'admin.

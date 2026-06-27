@@ -5,20 +5,18 @@
 ## Fonctionnalités Principales
 
 ### Pour les Membres (Utilisateurs)
-- **Catalogue d'Applications** : Liste des applications disponibles triées par catégories.
-- **Détails de l'Application** : Page dédiée avec bannière, icône, description complète et galerie de captures d'écran (jusqu'à 5 images).
-- **Authentification Unifiée** : Inscription par email/mot de passe ou via **Google (OAuth)**. L'authentification est requise pour interagir avec les applications.
-- **Téléchargement Direct** : Les liens Google Drive sont convertis en liens de téléchargement directs.
-- **Statistiques en Temps Réel** : Compteurs visibles pour les Vues (👁️) et les Téléchargements (⬇️).
-- **Système de Notation (Avis)** : Les membres peuvent laisser un commentaire et attribuer une note (de 1 à 5 étoiles) à une application.
-- **Votes (J'aime / Je n'aime pas)** : Système de vote unique par utilisateur pour évaluer rapidement une application.
-- **Contact Admin** : Un bouton flottant permet aux membres d'envoyer des messages directs à l'administrateur de la plateforme.
+- **Catalogue d'Applications & Recherche** : Liste triée avec une barre de recherche intelligente (Titre, description, développeur).
+- **Navigation & Profil** : Menu latéral interactif donnant accès aux paramètres, aide et profil.
+- **Détails de l'Application** : Page dédiée avec galerie d'images et bouton de téléchargement.
+- **Authentification Unifiée** : Inscription par email/mot de passe ou via **Google et Facebook (OAuth)**.
+- **Personnalisation** : Sélecteur visuel d'avatars pour le profil membre (sans surcharger la BDD).
+- **Système de Notation & Votes** : Les membres peuvent laisser un commentaire, noter et voter (J'aime / Je n'aime pas).
+- **Contact Admin** : Un bouton permet d'envoyer des tickets/messages de support.
 
 ### Pour l'Administrateur
-- **Tableau de Bord Privé** : Espace sécurisé pour gérer les applications.
-- **Gestion du Catalogue** : Ajout, modification et suppression d'applications avec upload d'images (Icône, Bannière, et jusqu'à 5 captures d'écran) directement sur le serveur.
-- **Tri Intelligent** : Les applications sont automatiquement classées par popularité (nombre de téléchargements).
-- **Statistiques Globales** : Suivi des visiteurs quotidiens, du total des téléchargements et gestion des messages entrants envoyés par les membres.
+- **Tableau de Bord Privé & Indicateurs** : Suivi des statistiques et des membres inscrits (avec indicateur en ligne simulé).
+- **Gestion du Catalogue** : Ajout et upload d'images multiples (Storage).
+- **Vision Assistant Cognitif (En cours)** : Préparation du terrain pour une IA d'assistance au tri de requêtes.
 
 ## Technologies Utilisées
 - **Frontend** : React 19, TypeScript, Tailwind CSS, Lucide React (Icônes).
