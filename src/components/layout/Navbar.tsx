@@ -235,7 +235,7 @@ export default function Navbar() {
               </button>
               <Link to="/" className="text-xl font-medium text-gray-700 flex items-center gap-2">
                 <span className="text-indigo-600 font-bold text-2xl">▶</span>
-                AintStore
+                MadaStack
               </Link>
             
             <div className="hidden md:flex ml-8 gap-6">
@@ -330,7 +330,7 @@ export default function Navbar() {
                             <div key={msg.id} className={`p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!msg.is_read ? 'bg-indigo-50/30' : ''}`}>
                               <div className="flex justify-between items-start mb-1">
                                 <span className="font-semibold text-sm text-gray-900 flex items-center gap-1">
-                                  Admin MadApps Pro
+                                  Admin MadaStack
                                 </span>
                                 <span className="text-xs text-gray-500">{new Date(msg.created_at).toLocaleDateString()}</span>
                               </div>

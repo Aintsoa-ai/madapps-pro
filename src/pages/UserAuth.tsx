@@ -83,7 +83,7 @@ export default function UserAuth() {
             <p className="text-gray-500 mt-2 text-sm">
               {isLogin 
                 ? 'Connectez-vous pour télécharger et noter nos applications.' 
-                : 'Rejoignez la communauté AintStore.'}
+                : 'Rejoignez la communauté MadaStack.'}
             </p>
           </div>
 

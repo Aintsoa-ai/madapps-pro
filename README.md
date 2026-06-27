@@ -1,6 +1,6 @@
-# AintStore
+# MadaStack
 
-**AintStore** est une plateforme professionnelle de distribution d'applications. Elle permet aux utilisateurs de découvrir, de télécharger, de noter et de commenter des applications, tout en offrant aux administrateurs un tableau de bord complet pour gérer le catalogue et analyser les statistiques.
+**MadaStack** est une plateforme professionnelle de distribution d'applications. Elle permet aux utilisateurs de découvrir, de télécharger, de noter et de commenter des applications, tout en offrant aux administrateurs un tableau de bord complet pour gérer le catalogue et analyser les statistiques.
 
 ## Fonctionnalités Principales
 

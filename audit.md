@@ -1,4 +1,4 @@
-# Audit Technique — AintStore
+# Audit Technique — MadaStack
 
 ## État Actuel de l'Architecture
 - **Stack** : React 19, Vite, Tailwind CSS, Supabase, TypeScript, React Router.

@@ -15,7 +15,7 @@ export default function Downloads() {
   const fetchDownloads = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      // Pour l'instant, MadApps Pro n'a pas de table user_downloads stricte.
+      // Pour l'instant, MadaStack n'a pas de table user_downloads stricte.
       // Si la table 'user_downloads' existe, on la requête.
       // Sinon, on simule ou on utilise une requête appropriée pour le futur.
       try {

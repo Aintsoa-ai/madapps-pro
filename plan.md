@@ -1,4 +1,4 @@
-# Plan de Conception — AintStore
+# Plan de Conception — MadaStack
 
 ## Phase 1 : Fondation (Terminée)
 - [x] Initialisation du projet Vite + React + TS.

@@ -7,7 +7,7 @@ export default function About() {
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">À propos de MadApps Pro</h1>
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">À propos de MadaStack</h1>
           <p className="text-lg text-gray-600">Version 1.0.0</p>
         </div>
         
@@ -20,7 +20,7 @@ export default function About() {
               <h2 className="text-2xl font-bold text-gray-900">Notre Mission</h2>
             </div>
             <p className="text-gray-600 leading-relaxed">
-              MadApps Pro (AintStore) est la plateforme de distribution d'applications et de jeux de nouvelle génération pour Madagascar et au-delà. 
+              MadaStack est la plateforme de distribution d'applications et de jeux de nouvelle génération pour Madagascar et au-delà. 
               Nous nous engageons à fournir des applications de haute qualité, sécurisées et performantes, développées par les meilleurs talents.
             </p>
           </section>
@@ -51,7 +51,7 @@ export default function About() {
               <li>L'utilisation de la plateforme implique l'acceptation intégrale de ces conditions.</li>
               <li>Les applications téléchargées sont réservées à un usage personnel et ne peuvent être redistribuées.</li>
               <li>Tout comportement abusif, frauduleux ou non respectueux entraînera la suspension immédiate du compte.</li>
-              <li>MadApps Pro se réserve le droit de modifier le contenu et les fonctionnalités de la plateforme à tout moment.</li>
+              <li>MadaStack se réserve le droit de modifier le contenu et les fonctionnalités de la plateforme à tout moment.</li>
             </ul>
           </section>
         </div>

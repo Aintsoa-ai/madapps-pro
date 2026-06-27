@@ -16,7 +16,7 @@ export default function CreateApp() {
     slug: '',
     short_description: '',
     full_description: '',
-    developer_name: 'AintStore',
+    developer_name: 'MadaStack',
     category_id: '',
   });
 

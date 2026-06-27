@@ -1,4 +1,4 @@
-# Nos Idées — AintStore
+# Nos Idées — MadaStack
 
 ## Points Forts (Ce qui marche très bien)
 - Interface graphique moderne, premium et dynamique (Tailwind CSS, animations).
@@ -15,6 +15,7 @@
 
 ## Ce qui a été fait (Aujourd'hui - 27 Juin 2026)
 - [x] Refonte UI & Navigation : Mise en place d'un menu latéral (Sidebar) pour accéder au Profil, Mes Téléchargements, Paramètres, et Aide.
+- [x] Renommage complet de la plateforme en **MadaStack**.
 - [x] Accessibilité : Correction de la visibilité des textes (text-gray-900) pour contrer les modes sombres forcés sur mobile.
 - [x] Optimisation de Stockage : Remplacement de l'upload d'avatar par un "Sélecteur visuel d'Avatars" (DiceBear) pour économiser la mémoire de Supabase et accélérer le chargement.
 - [x] Authentification : Réintégration parfaite des boutons Google & Facebook, et résolution du bug `validation_failed` et `upsert` (`full_name`/`updated_at`).
