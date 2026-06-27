@@ -11,12 +11,19 @@ export default function Dashboard() {
   const [dailyVisitors, setDailyVisitors] = useState(0);
   const [messages, setMessages] = useState<any[]>([]);
   const [comments, setComments] = useState<any[]>([]);
+  const [profiles, setProfiles] = useState<any[]>([]);
 
   useEffect(() => {
     fetchStats();
     fetchMessages();
     fetchComments();
+    fetchProfiles();
   }, []);
+
+  const fetchProfiles = async () => {
+    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
+    if (data) setProfiles(data);
+  };
 
   const fetchStats = async () => {
     const today = new Date().toISOString().split('T')[0];
@@ -62,12 +69,19 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
           <div className="bg-indigo-50 p-4 rounded-xl"><Users className="w-8 h-8 text-indigo-600" /></div>
           <div>
             <div className="text-sm text-gray-500">Visiteurs (Aujourd'hui)</div>
             <div className="text-2xl font-bold text-gray-900">{dailyVisitors}</div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
+          <div className="bg-blue-50 p-4 rounded-xl"><Users className="w-8 h-8 text-blue-600" /></div>
+          <div>
+            <div className="text-sm text-gray-500">Membres Inscrits</div>
+            <div className="text-2xl font-bold text-gray-900">{profiles.length}</div>
           </div>
         </div>
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4">
@@ -86,7 +100,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         {/* Liste des applications (2 colonnes) */}
         <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="p-6 border-b border-gray-200">
@@ -171,6 +185,43 @@ export default function Dashboard() {
               ))
             )}
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">Derniers Membres Inscrits</h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-gray-600">
+            <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-4">Utilisateur</th>
+                <th className="px-6 py-4">Date d'inscription</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profiles.length === 0 ? (
+                <tr><td colSpan={2} className="text-center py-8">Aucun membre inscrit.</td></tr>
+              ) : (
+                profiles.slice(0, 10).map((profile) => (
+                  <tr key={profile.id} className="border-b border-gray-100 hover:bg-gray-50 transition">
+                    <td className="px-6 py-4 flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+                        {profile.username?.charAt(0).toUpperCase() || 'A'}
+                      </div>
+                      <div className="font-semibold text-gray-900">{profile.username || 'Anonyme'}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      {new Date(profile.created_at).toLocaleDateString('fr-FR', {
+                        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute:'2-digit'
+                      })}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
