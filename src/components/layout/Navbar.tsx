@@ -299,7 +299,7 @@ export default function Navbar() {
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
                           placeholder="Écrivez votre message..."
-                          className="flex-1 w-full bg-white border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none mb-3"
+                          className="flex-1 w-full bg-white text-gray-900 border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none mb-3"
                           required
                         />
                         <div className="flex items-center justify-between">

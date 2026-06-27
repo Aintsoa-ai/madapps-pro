@@ -89,12 +89,12 @@ export default function Profile() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Pseudo</label>
-                  <input type="text" value={profile.username} onChange={(e) => setProfile({...profile, username: e.target.value})} className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Votre pseudo public" />
+                  <input type="text" value={profile.username} onChange={(e) => setProfile({...profile, username: e.target.value})} className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-gray-900" placeholder="Votre pseudo public" />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">URL de l'avatar</label>
-                  <input type="url" value={profile.avatar_url} onChange={(e) => setProfile({...profile, avatar_url: e.target.value})} className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="https://..." />
+                  <input type="url" value={profile.avatar_url} onChange={(e) => setProfile({...profile, avatar_url: e.target.value})} className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-gray-900" placeholder="https://..." />
                 </div>
 
                 <div className="flex justify-end pt-4">
