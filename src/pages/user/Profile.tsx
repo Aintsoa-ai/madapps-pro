@@ -93,8 +93,30 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">URL de l'avatar</label>
-                  <input type="url" value={profile.avatar_url} onChange={(e) => setProfile({...profile, avatar_url: e.target.value})} className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-gray-900" placeholder="https://..." />
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Choisissez votre Avatar</label>
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      "https://api.dicebear.com/7.x/adventurer/svg?seed=Felix",
+                      "https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka",
+                      "https://api.dicebear.com/7.x/adventurer/svg?seed=Nala",
+                      "https://api.dicebear.com/7.x/adventurer/svg?seed=Leo",
+                      "https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe",
+                      "https://api.dicebear.com/7.x/adventurer/svg?seed=Max"
+                    ].map((url, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setProfile({ ...profile, avatar_url: url })}
+                        className={`w-16 h-16 rounded-full border-4 overflow-hidden transition-all ${
+                          profile.avatar_url === url 
+                            ? 'border-indigo-600 scale-110 shadow-md' 
+                            : 'border-transparent hover:border-gray-200 opacity-70 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={url} alt={`Avatar ${idx + 1}`} className="w-full h-full object-cover bg-gray-100" />
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="flex justify-end pt-4">
