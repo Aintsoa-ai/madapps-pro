@@ -32,7 +32,7 @@ export function useCreateApp() {
     return publicUrlData.publicUrl;
   };
 
-  const createApp = async (formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, externalApkUrl: string = '') => {
+  const createApp = async (formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, externalApkUrl: string = '', screenshotFiles: File[] = []) => {
     try {
       setLoading(true);
       setError(null);
@@ -51,6 +51,12 @@ export function useCreateApp() {
         apk_url = await uploadFile(apkFile, 'apps');
       }
 
+      const uploadedScreenshots: string[] = [];
+      for (const file of screenshotFiles) {
+        const url = await uploadFile(file, 'screenshots');
+        uploadedScreenshots.push(url);
+      }
+
       const { error: insertError } = await supabase.from('apps').insert([
         {
           title: formData.title,
@@ -62,6 +68,7 @@ export function useCreateApp() {
           icon_url,
           banner_url,
           apk_url,
+          screenshots: uploadedScreenshots,
           status: 'published',
         },
       ]);

@@ -15,12 +15,13 @@ export default function CreateApp() {
     slug: '',
     short_description: '',
     full_description: '',
-    developer_name: 'MadApps',
+    developer_name: 'AintStore',
     category_id: '',
   });
 
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [screenshotFiles, setScreenshotFiles] = useState<File[]>([]);
   const [apkFile, setApkFile] = useState<File | null>(null);
   const [apkType, setApkType] = useState<'upload' | 'link'>('link');
   const [externalApkUrl, setExternalApkUrl] = useState('');
@@ -31,7 +32,7 @@ export default function CreateApp() {
     if (apkType === 'upload' && !apkFile) return alert('Veuillez uploader le fichier APK de l\'application');
     if (apkType === 'link' && !externalApkUrl) return alert('Veuillez fournir le lien de téléchargement');
     
-    const success = await createApp(formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, apkType === 'link' ? externalApkUrl : '');
+    const success = await createApp(formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, apkType === 'link' ? externalApkUrl : '', screenshotFiles);
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -110,13 +111,38 @@ export default function CreateApp() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Bannière (Optionnel)</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Bannière Principale</label>
             <div className="border-2 border-dashed border-gray-700 rounded-lg p-4 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
               <input type="file" accept="image/*" onChange={(e) => setBannerFile(e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               <Upload className="w-6 h-6 text-gray-500 mb-2" />
               <span className="text-sm text-gray-400">{bannerFile ? bannerFile.name : 'Choisir une image'}</span>
             </div>
           </div>
+        </div>
+
+        <div className="border-t border-gray-700 pt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Captures d'écran (Max 5)</label>
+          <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
+            <input type="file" multiple accept="image/*" 
+              onChange={(e) => {
+                const files = Array.from(e.target.files || []);
+                if (files.length > 5) alert('Maximum 5 images autorisées');
+                setScreenshotFiles(files.slice(0, 5));
+              }} 
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <Upload className="w-8 h-8 text-indigo-500 mb-2" />
+            <span className="font-medium text-white">Ajouter des captures d'écran</span>
+            <span className="text-sm text-gray-400 mt-1">{screenshotFiles.length} image(s) sélectionnée(s)</span>
+          </div>
+          {screenshotFiles.length > 0 && (
+            <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+              {screenshotFiles.map((file, idx) => (
+                <div key={idx} className="w-24 h-16 flex-shrink-0 bg-gray-800 rounded border border-gray-700 overflow-hidden relative">
+                   <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" alt="Screenshot preview" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="border-t border-gray-700 pt-6">

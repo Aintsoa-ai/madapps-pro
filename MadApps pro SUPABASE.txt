@@ -1,3 +1,34 @@
+
+h
+mail admin 
+***********
+mail : madappspro@gmail.com
+supabase pass :MadApp_Pro21*/ 
+
+
+
 mail : madappspro@gmail.com
 supabase pass :MadApp_Pro21*/ 
 pass : MadApp_Pro*/
+
+anon public : 
+*************
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyenBmaHNzYXZocm1zdWVid3h6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NzEyODAsImV4cCI6MjA5ODA0NzI4MH0.3ifvNRbNlkwus689tuHL46aPgAmRIrZ_vr8kcbWm1fY
+
+http://localhost:5173/admin/login
+Utilisez ces identifiants de test (que vous pourrez changer plus tard) :
+Email : admin@madapps.com
+Mot de passe : MadAppsAdmin2026!
+
+
+je veux que :
+*les membres puisse laisser des commentaires
+*je puisse voire le nombre de visiteur par jours 
+*sur les applications ajouter des étoiles pour la notation 
+*je veux voir pour chaque application le nombre de telechagement , le nombre de vue , et le nombre de j'aime ou de je n'aime pas 
+* les membres puisse aussi m'envoyer des messages directement c'est à dire en tant qu'admin (moi), les membre puisse me contacter ou m'envoyer des messages 
+pour que je peut voir quelles sont par mis les messages pourrait ameliorer le platforme 
+*lorsque les personne cliques sur l'image 1 , il doit s'incrire d'abord s'il ne pas encore membre sinon s'ils sont deja inscrit sur le platforme il peut voire les l'application 
+*uniformiser la taille dans le rectangle rouge de l'image 2 
+* L'application le plus telecharger se met en tête de liste du coté vue administrateur
+https://drive.google.com/file/d/1PYUqQCq1JCqIQeBAdrUiNJCXaAzWF7oo/view?usp=sharing : Miara-Dia

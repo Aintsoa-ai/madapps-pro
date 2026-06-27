@@ -7,8 +7,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function signUpAdmin() {
   const { data, error } = await supabase.auth.signUp({
-    email: 'admin@madapps.com',
-    password: 'MadAppsAdmin2026!',
+    email: 'madappspro@gmail.com',
+    password: 'MadApp_Pro21*/',
   });
   if (error) {
     console.error('Erreur:', error.message);

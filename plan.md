@@ -1,4 +1,4 @@
-# Plan de Conception — MadApps Pro
+# Plan de Conception — AintStore
 
 ## Phase 1 : Fondation (Terminée)
 - [x] Initialisation du projet Vite + React + TS.
@@ -15,7 +15,8 @@
 - [x] Page de détails d'une application (AppDetails) :
   - [x] Header avec bannière et informations de l'application.
   - [x] Bouton de téléchargement direct.
-  - [x] Description complète et captures d'écran.
+  - [x] Description complète.
+  - [x] Galerie dynamique des captures d'écran (jusqu'à 5 images).
 
 ## Phase 3 : Back-Office et Authentification (Terminée)
 - [x] Création d'un compte Administrateur sécurisé.
@@ -23,7 +24,7 @@
 - [x] Espace membre et Social Login (`/auth`)
 - [x] Protection des routes administrateur et des actions membres.
 - [x] Tableau de Bord Administrateur (`/admin/dashboard`).
-- [x] Formulaire de création d'application avec Upload d'images (Supabase Storage).
+- [x] Formulaire de création/édition d'application avec Upload multiple d'images (Icône, Bannière, et Captures d'écran via Supabase Storage).
 
 ## Phase 4 : Interactions Utilisateurs et Statistiques (Terminée)
 - [x] Ajout des tables Supabase : commentaires, votes, visiteurs, messages (via `supabase_schema_v2.sql`).

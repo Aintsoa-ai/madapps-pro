@@ -21,9 +21,10 @@ export default function EditApp() {
     developer_name: '',
     category_id: '',
   });
-
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [screenshotFiles, setScreenshotFiles] = useState<File[]>([]);
+  const [existingScreenshots, setExistingScreenshots] = useState<string[]>([]);
   const [apkFile, setApkFile] = useState<File | null>(null);
   const [apkType, setApkType] = useState<'upload' | 'link'>('link');
   const [externalApkUrl, setExternalApkUrl] = useState('');
@@ -44,6 +45,9 @@ export default function EditApp() {
       } else if (app.apk_url) {
         setApkType('upload');
       }
+      if (app.screenshots && Array.isArray(app.screenshots)) {
+        setExistingScreenshots(app.screenshots);
+      }
     }
   }, [app]);
 
@@ -63,7 +67,7 @@ export default function EditApp() {
       finalExternalUrl = externalApkUrl;
     }
     
-    const success = await updateApp(app.id, formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, finalExternalUrl, app.icon_url || '', app.banner_url || '', app.apk_url || '');
+    const success = await updateApp(app.id, formData, iconFile, bannerFile, apkType === 'upload' ? apkFile : null, finalExternalUrl, app.icon_url || '', app.banner_url || '', app.apk_url || '', existingScreenshots, screenshotFiles);
     if (success) {
       navigate('/admin/dashboard');
     }
@@ -150,6 +154,45 @@ export default function EditApp() {
             </div>
             {app.banner_url && <img src={app.banner_url} className="mt-2 h-12 w-auto rounded-lg object-cover" alt="Current banner" />}
           </div>
+        </div>
+
+        <div className="border-t border-gray-700 pt-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Ajouter/Remplacer les Captures d'écran (Max 5)</label>
+          <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-900/50 hover:bg-gray-900 transition cursor-pointer relative">
+            <input type="file" multiple accept="image/*" 
+              onChange={(e) => {
+                const files = Array.from(e.target.files || []);
+                if (existingScreenshots.length + files.length > 5) {
+                  alert(`Vous avez déjà ${existingScreenshots.length} images. Vous ne pouvez pas dépasser 5 au total.`);
+                  return;
+                }
+                setScreenshotFiles(files);
+              }} 
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <Upload className="w-8 h-8 text-indigo-500 mb-2" />
+            <span className="font-medium text-white">Ajouter des images</span>
+            <span className="text-sm text-gray-400 mt-1">{screenshotFiles.length} nouvelle(s) image(s)</span>
+          </div>
+          
+          {(existingScreenshots.length > 0 || screenshotFiles.length > 0) && (
+            <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+              {existingScreenshots.map((url, idx) => (
+                <div key={`exist-${idx}`} className="w-24 h-16 flex-shrink-0 bg-gray-800 rounded border border-gray-700 overflow-hidden relative group">
+                   <img src={url} className="w-full h-full object-cover" alt="Screenshot" />
+                   <button type="button" 
+                     onClick={() => setExistingScreenshots(existingScreenshots.filter((_, i) => i !== idx))}
+                     className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
+                     ×
+                   </button>
+                </div>
+              ))}
+              {screenshotFiles.map((file, idx) => (
+                <div key={`new-${idx}`} className="w-24 h-16 flex-shrink-0 bg-gray-800 rounded border border-green-500 overflow-hidden relative">
+                   <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" alt="Screenshot preview" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="border-t border-gray-700 pt-6">

@@ -24,7 +24,7 @@ export function useEditApp() {
     return publicUrlData.publicUrl;
   };
 
-  const updateApp = async (id: string, formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, externalApkUrl: string, existingIcon: string, existingBanner: string, existingApk: string) => {
+  const updateApp = async (id: string, formData: AppFormData, iconFile: File | null, bannerFile: File | null, apkFile: File | null, externalApkUrl: string, existingIcon: string, existingBanner: string, existingApk: string, existingScreenshots: string[], screenshotFiles: File[] = []) => {
     try {
       setLoading(true);
       setError(null);
@@ -43,6 +43,12 @@ export function useEditApp() {
         apk_url = await uploadFile(apkFile, 'apps');
       }
 
+      let finalScreenshots = [...(existingScreenshots || [])];
+      for (const file of screenshotFiles) {
+        const url = await uploadFile(file, 'screenshots');
+        finalScreenshots.push(url);
+      }
+
       const { error: updateError } = await supabase.from('apps').update({
         title: formData.title,
         slug: formData.slug,
@@ -53,6 +59,7 @@ export function useEditApp() {
         icon_url,
         banner_url,
         apk_url,
+        screenshots: finalScreenshots,
       }).eq('id', id);
 
       if (updateError) {

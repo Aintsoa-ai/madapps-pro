@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+/* Personnalisation globale des barres de défilement pour toute la plateforme */
+::-webkit-scrollbar {
+  width: 6px; /* Barre verticale très fine */
+  height: 6px; /* Barre horizontale très fine */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Fond invisible */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151; /* Couleur grise discrète (gray-700) */
+  border-radius: 10px; /* Bords arrondis */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5; /* Devient indigo-600 au survol pour montrer qu'on peut cliquer */
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

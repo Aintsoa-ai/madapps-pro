@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User as UserIcon, Loader2 } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, Loader2, Eye, EyeOff } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 
 export default function UserAuth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
       if (error) throw error;
       // Remarque: Pour OAuth, la création du profil est souvent mieux gérée par un trigger SQL,
       // mais le profil sera créé manuellement lors du premier accès si nécessaire.
@@ -75,7 +76,7 @@ export default function UserAuth() {
             <p className="text-gray-400 mt-2 text-sm">
               {isLogin 
                 ? 'Connectez-vous pour télécharger et noter nos applications.' 
-                : 'Rejoignez la communauté MadApps Pro.'}
+                : 'Rejoignez la communauté AintStore.'}
             </p>
           </div>
 
@@ -106,13 +107,20 @@ export default function UserAuth() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                  className="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                   placeholder="••••••••"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
               </div>
             </div>
 

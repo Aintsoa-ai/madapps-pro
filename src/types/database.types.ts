@@ -25,5 +25,6 @@ export interface App {
   downloads_count?: number;
   likes_count?: number;
   dislikes_count?: number;
+  screenshots?: string[] | null;
   categories?: Category; // Relation
 }

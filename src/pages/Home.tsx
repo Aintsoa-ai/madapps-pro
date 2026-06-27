@@ -30,7 +30,7 @@ export default function Home() {
           <div className="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-3xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-indigo-500/20 shadow-2xl">
             <div className="z-10 flex-1">
               <span className="bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Nouveau</span>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">MadApps Pro V1</h1>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">AintStore</h1>
               <p className="text-indigo-200 text-lg mb-8 max-w-xl">
                 Découvrez toutes nos applications au même endroit. Profitez d'un téléchargement rapide et sécurisé.
               </p>
