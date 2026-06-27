@@ -106,10 +106,13 @@ export function useAppInteractions(app: any | null, user: User | null) {
     }
   };
 
+  const [messageSuccess, setMessageSuccess] = useState(false);
+
   const handleContactAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !messageContent.trim()) return;
     setIsSendingMessage(true);
+    setMessageSuccess(false);
     try {
       // S'assurer que le profil existe (fallback sécurité)
       const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
@@ -117,15 +120,22 @@ export function useAppInteractions(app: any | null, user: User | null) {
         await supabase.from('profiles').insert({ id: user.id, username: user.email?.split('@')[0] || 'Anonyme' });
       }
 
-      await supabase.from('messages').insert({
+      const { error } = await supabase.from('messages').insert({
         sender_id: user.id,
         subject: messageSubject || `À propos de ${app?.title}`,
         content: messageContent
       });
-      setShowContactModal(false);
+      
+      if (error) throw error;
       setMessageContent('');
       setMessageSubject('');
-      alert("Votre message a été envoyé à l'administrateur avec succès !");
+      setMessageSuccess(true);
+      
+      // Masquer le message de succès et fermer la modale après 3 secondes
+      setTimeout(() => {
+        setMessageSuccess(false);
+        setShowContactModal(false);
+      }, 3000);
     } catch (e) {
       console.error(e);
       alert("Erreur lors de l'envoi du message.");
@@ -150,6 +160,7 @@ export function useAppInteractions(app: any | null, user: User | null) {
     messageContent,
     setMessageContent,
     isSendingMessage,
+    messageSuccess,
     handleDownload,
     handleVote,
     handlePostComment,

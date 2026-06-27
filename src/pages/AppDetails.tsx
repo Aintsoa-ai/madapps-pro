@@ -128,6 +128,7 @@ export default function AppDetails() {
         messageContent={messageContent}
         setMessageContent={setMessageContent}
         isSendingMessage={isSendingMessage}
+        messageSuccess={messageSuccess}
       />
     </div>
   );
