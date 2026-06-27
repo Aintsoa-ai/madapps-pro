@@ -27,19 +27,19 @@ export default function Home() {
         {/* Section Mise en avant */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-white tracking-tight">En vedette</h2>
-          <div className="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-3xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-indigo-500/20 shadow-2xl">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border border-indigo-500/30 shadow-[0_0_40px_rgba(139,92,246,0.15)]">
             <div className="z-10 flex-1">
-              <span className="bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Nouveau</span>
+              <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Nouveau</span>
               <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">AintStore</h1>
-              <p className="text-indigo-200 text-lg mb-8 max-w-xl">
+              <p className="text-gray-300 text-lg mb-8 max-w-xl">
                 Découvrez toutes nos applications au même endroit. Profitez d'un téléchargement rapide et sécurisé.
               </p>
-              <button className="bg-white text-indigo-900 font-bold px-8 py-3 rounded-full hover:bg-indigo-50 transition transform hover:-translate-y-1 shadow-lg">
+              <button className="bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold px-8 py-3 rounded-full transition transform hover:-translate-y-1 shadow-lg shadow-indigo-500/25">
                 Explorer
               </button>
             </div>
             {/* Décoration */}
-            <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-indigo-500/20 to-transparent pointer-events-none"></div>
+            <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-cyan-500/10 via-indigo-500/10 to-transparent pointer-events-none"></div>
           </div>
         </section>
 

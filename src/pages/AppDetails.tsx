@@ -110,7 +110,7 @@ export default function AppDetails() {
       <div className="fixed bottom-6 right-6 z-50">
         <button 
           onClick={() => setShowContactModal(true)}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white p-4 rounded-full shadow-2xl flex items-center gap-2 group transition-all"
+          className="bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white p-4 rounded-full shadow-2xl flex items-center gap-2 group transition-all"
         >
           <MessageSquare className="w-6 h-6" />
           <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-medium">

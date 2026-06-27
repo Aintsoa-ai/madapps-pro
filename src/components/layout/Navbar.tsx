@@ -34,7 +34,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
             <Menu className="h-6 w-6 text-gray-300 hover:text-white cursor-pointer md:hidden" />
-            <Link to="/" className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+            <Link to="/" className="text-xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
               AintStore
             </Link>
           </div>

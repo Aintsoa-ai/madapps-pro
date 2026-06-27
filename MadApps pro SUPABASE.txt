@@ -20,6 +20,12 @@ Utilisez ces identifiants de test (que vous pourrez changer plus tard) :
 Email : admin@madapps.com
 Mot de passe : MadAppsAdmin2026!
 
+*****************
+LIEN MADA APPS 
+*****************
+https://madapps-pro.vercel.app
+
+********************
 
 je veux que :
 *les membres puisse laisser des commentaires
@@ -31,4 +37,5 @@ pour que je peut voir quelles sont par mis les messages pourrait ameliorer le pl
 *lorsque les personne cliques sur l'image 1 , il doit s'incrire d'abord s'il ne pas encore membre sinon s'ils sont deja inscrit sur le platforme il peut voire les l'application 
 *uniformiser la taille dans le rectangle rouge de l'image 2 
 * L'application le plus telecharger se met en tête de liste du coté vue administrateur
+*ajouter une assistant IA  pour m'epauler quand je suis absent ( ajouter des clé apli google ai studio pour repondre au commentaire favorable des membres)
 https://drive.google.com/file/d/1PYUqQCq1JCqIQeBAdrUiNJCXaAzWF7oo/view?usp=sharing : Miara-Dia

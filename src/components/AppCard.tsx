@@ -36,10 +36,10 @@ export default function AppCard({ app }: AppCardProps) {
       <div className="px-5 pb-5 flex flex-col flex-1">
         <p className="text-gray-300 text-sm line-clamp-2 flex-1">{app.short_description}</p>
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs font-medium px-2.5 py-1 bg-indigo-500/20 text-indigo-400 rounded-full">
+          <span className="text-xs font-medium px-2.5 py-1 bg-cyan-500/20 text-cyan-400 rounded-full">
              {app.categories?.name || 'Général'}
           </span>
-          <span className="text-sm font-semibold bg-gray-700 group-hover:bg-indigo-600 text-white px-4 py-1.5 rounded-full transition-colors">
+          <span className="text-sm font-semibold bg-gray-700 group-hover:bg-gradient-to-r group-hover:from-indigo-500 group-hover:to-cyan-400 text-white px-4 py-1.5 rounded-full transition-all">
             Voir
           </span>
         </div>
