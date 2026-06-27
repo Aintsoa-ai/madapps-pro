@@ -29,15 +29,15 @@ CREATE TABLE IF NOT EXISTS apps (
 ALTER TABLE categories DISABLE ROW LEVEL SECURITY;
 ALTER TABLE apps DISABLE ROW LEVEL SECURITY;
 
--- Insertion de données de test (Catégories)
+-- Insertion de données de test (Catégories définitives)
 INSERT INTO categories (id, name, slug, icon) VALUES 
-('11111111-1111-1111-1111-111111111111', 'Productivité', 'productivite', 'briefcase'),
+('11111111-1111-1111-1111-111111111111', 'Productivité & Professionnel', 'productivite', 'briefcase'),
 ('22222222-2222-2222-2222-222222222222', 'Outils & Utilitaires', 'outils', 'wrench'),
-('33333333-3333-3333-3333-333333333333', 'Divertissement', 'divertissement', 'gamepad-2')
-ON CONFLICT DO NOTHING;
+('33333333-3333-3333-3333-333333333333', 'Divertissement & Jeux', 'divertissement', 'gamepad-2'),
+('44444444-4444-4444-4444-444444444444', 'Réseaux Sociaux & Communication', 'communication', 'message-square'),
+('55555555-5555-5555-5555-555555555555', 'Éducation & Apprentissage', 'education', 'graduation-cap'),
+('66666666-6666-6666-6666-666666666666', 'Finances & Commerce', 'finance', 'credit-card'),
+('77777777-7777-7777-7777-777777777777', 'Style de vie & Santé', 'lifestyle', 'heart')
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, icon = EXCLUDED.icon;
 
--- Insertion de données de test (Applications)
-INSERT INTO apps (title, slug, short_description, icon_url, banner_url, featured, category_id) VALUES 
-('Nyrnox Pro', 'nyrnox-pro', 'L''assistant IA ultime pour votre productivité.', 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=250&h=250', 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800&h=400', true, '11111111-1111-1111-1111-111111111111'),
-('Miara-Dia', 'miara-dia', 'Covoiturage simplifié pour tous vos trajets.', 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=250&h=250', 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800&h=400', true, '22222222-2222-2222-2222-222222222222')
-ON CONFLICT DO NOTHING;
+-- Plus aucune application de test insérée par défaut.
