@@ -6,7 +6,7 @@ import Navbar from '../../components/layout/Navbar';
 
 export default function Profile() {
   const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState({ username: '', avatar_url: '', full_name: '' });
+  const [profile, setProfile] = useState({ username: '', avatar_url: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -22,8 +22,7 @@ export default function Profile() {
       if (data) {
         setProfile({
           username: data.username || '',
-          avatar_url: data.avatar_url || '',
-          full_name: data.full_name || ''
+          avatar_url: data.avatar_url || ''
         });
       }
     }
@@ -38,14 +37,15 @@ export default function Profile() {
     try {
       const { error } = await supabase.from('profiles').upsert({
         id: user.id,
-        ...profile,
+        username: profile.username,
+        avatar_url: profile.avatar_url,
         updated_at: new Date().toISOString()
       });
       if (error) throw error;
       toast.success("Profil mis à jour avec succès !");
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      toast.error("Erreur lors de la mise à jour du profil.");
+      toast.error(e.message || "Erreur lors de la mise à jour du profil.");
     } finally {
       setSaving(false);
     }
