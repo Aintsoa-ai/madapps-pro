@@ -1,28 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gray-900: #0a0a0f;
-  --color-gray-800: #171721;
-  --color-gray-700: #232336;
-  --color-gray-600: #383854;
-  --color-gray-500: #6b6b8a;
-  --color-gray-400: #9b9bb5;
-  --color-gray-300: #cacade;
-  --color-gray-200: #e5e5f0;
-  --color-gray-100: #f4f4f9;
+  --color-gray-900: #202124;
+  --color-gray-800: #3c4043;
+  --color-gray-700: #5f6368;
+  --color-gray-600: #80868b;
+  --color-gray-500: #9aa0a6;
+  --color-gray-400: #bdc1c6;
+  --color-gray-300: #dadce0;
+  --color-gray-200: #e8eaed;
+  --color-gray-100: #f1f3f4;
+  --color-gray-50:  #f8f9fa;
 
-  --color-indigo-400: #a78bfa;
-  --color-indigo-500: #8b5cf6;
-  --color-indigo-600: #7c3aed;
+  --color-indigo-400: #01875f;
+  --color-indigo-500: #01875f;
+  --color-indigo-600: #006b4b;
 
-  --color-cyan-400: #22d3ee;
-  --color-cyan-500: #06b6d4;
-  --color-cyan-600: #0891b2;
+  --color-cyan-400: #01875f;
+  --color-cyan-500: #01875f;
+  --color-cyan-600: #006b4b;
 }
 
 body {
-  background-color: var(--color-gray-900);
-  color: var(--color-gray-200);
+  background-color: #ffffff;
+  color: var(--color-gray-900);
 }
 /* Personnalisation globale des barres de défilement pour toute la plateforme */
 ::-webkit-scrollbar {
