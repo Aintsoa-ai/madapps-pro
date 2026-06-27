@@ -1,15 +1,30 @@
 import Navbar from '../components/layout/Navbar';
 import AppCard from '../components/AppCard';
 import { useApps } from '../hooks/useApps';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Search } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get('q') || '';
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [localSearch, setLocalSearch] = useState(searchParams.get('q') || '');
   const { apps, loading, error } = useApps();
   const [selectedCategory, setSelectedCategory] = useState<string>('Toutes');
+
+  // Sync localSearch when URL changes
+  useEffect(() => {
+    setLocalSearch(searchParams.get('q') || '');
+  }, [searchParams]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setLocalSearch(val);
+    if (val) {
+      setSearchParams({ q: val });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   // Extraire les catégories uniques
   const categories = ['Toutes', ...Array.from(new Set(apps.map(app => app.categories?.name).filter(Boolean)))];
@@ -17,8 +32,8 @@ export default function Home() {
   const filteredApps = apps.filter(app => {
     // Filtre par recherche
     const matchesSearch = (() => {
-      if (!searchQuery) return true;
-      const term = searchQuery.toLowerCase().replace(/[-_]/g, ' ');
+      if (!localSearch) return true;
+      const term = localSearch.toLowerCase().replace(/[-_]/g, ' ');
       const title = app.title.toLowerCase().replace(/[-_]/g, ' ');
       const shortDesc = (app.short_description || '').toLowerCase();
       const dev = (app.developer_name || '').toLowerCase();
@@ -37,6 +52,20 @@ export default function Home() {
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
+        {/* Barre de recherche professionnelle */}
+        <div className="relative max-w-2xl mx-auto mb-10">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            value={localSearch}
+            onChange={handleSearchChange}
+            className="block w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm hover:shadow-md text-base"
+            placeholder="Rechercher une application, un développeur..."
+          />
+        </div>
+
         {/* Section Catalogue */}
         <section>
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
