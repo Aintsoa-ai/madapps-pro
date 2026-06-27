@@ -1,6 +1,6 @@
 import { useApps } from '../../hooks/useApps';
 import { useDeleteApp } from '../../hooks/useDeleteApp';
-import { Plus, Edit, Trash2, Users, Download, Eye, MessageSquare } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, Download, Eye, MessageSquare, ThumbsUp, ThumbsDown, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -10,10 +10,12 @@ export default function Dashboard() {
   const { deleteApp } = useDeleteApp();
   const [dailyVisitors, setDailyVisitors] = useState(0);
   const [messages, setMessages] = useState<any[]>([]);
+  const [comments, setComments] = useState<any[]>([]);
 
   useEffect(() => {
     fetchStats();
     fetchMessages();
+    fetchComments();
   }, []);
 
   const fetchStats = async () => {
@@ -25,6 +27,11 @@ export default function Dashboard() {
   const fetchMessages = async () => {
     const { data } = await supabase.from('messages').select('*, profiles(username, avatar_url)').order('created_at', { ascending: false });
     if (data) setMessages(data);
+  };
+
+  const fetchComments = async () => {
+    const { data } = await supabase.from('comments').select('app_id, rating');
+    if (data) setComments(data);
   };
 
   const handleDelete = async (id: string, title: string) => {
@@ -98,7 +105,13 @@ export default function Dashboard() {
                 {loading ? (
                   <tr><td colSpan={3} className="text-center py-8">Chargement...</td></tr>
                 ) : (
-                  sortedApps.map((app) => (
+                  sortedApps.map((app) => {
+                    const appComments = comments.filter(c => c.app_id === app.id);
+                    const avgRating = appComments.length > 0 
+                      ? (appComments.reduce((acc, c) => acc + c.rating, 0) / appComments.length).toFixed(1) 
+                      : 'N/A';
+
+                    return (
                     <tr key={app.id} className="border-b border-gray-700 hover:bg-gray-750 transition">
                       <td className="px-6 py-4 flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-gray-700 overflow-hidden shrink-0">
@@ -110,9 +123,12 @@ export default function Dashboard() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex gap-4 text-xs font-medium">
-                          <span className="flex items-center gap-1 text-green-400"><Download className="w-3 h-3" /> {(app as any).downloads_count || 0}</span>
-                          <span className="flex items-center gap-1 text-blue-400"><Eye className="w-3 h-3" /> {(app as any).views_count || 0}</span>
+                        <div className="flex flex-wrap gap-4 text-xs font-medium">
+                          <span className="flex items-center gap-1 text-green-400" title="Téléchargements"><Download className="w-3 h-3" /> {(app as any).downloads_count || 0}</span>
+                          <span className="flex items-center gap-1 text-blue-400" title="Vues"><Eye className="w-3 h-3" /> {(app as any).views_count || 0}</span>
+                          <span className="flex items-center gap-1 text-indigo-400" title="J'aime"><ThumbsUp className="w-3 h-3" /> {(app as any).likes_count || 0}</span>
+                          <span className="flex items-center gap-1 text-red-400" title="Je n'aime pas"><ThumbsDown className="w-3 h-3" /> {(app as any).dislikes_count || 0}</span>
+                          <span className="flex items-center gap-1 text-yellow-400" title="Note moyenne"><Star className="w-3 h-3 fill-current" /> {avgRating}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -126,7 +142,8 @@ export default function Dashboard() {
                         </div>
                       </td>
                     </tr>
-                  ))
+                    );
+                  })
                 )}
               </tbody>
             </table>
