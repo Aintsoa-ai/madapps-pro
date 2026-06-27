@@ -31,4 +31,12 @@ Voici le prompt optimisé et structuré que vous pouvez copier-coller à votre a
 * **Processus de commande :** Au clic, affiche un message poli et formaté indiquant les tarifs du boost (ex: 50.000 Ar pour 7 jours) et demandant d'appeler l'administrateur pour validation et paiement.
 * **Affichage Front-End :** Modifie le flux d'affichage principal. Les applications avec un paramètre `is_boosted` actif doivent apparaître obligatoirement en tête de liste dans une section "Applications en vogue".
 
-**Pour commencer, fournis-moi la structure des tables Supabase mises à jour (profils, applications, abonnements) pour gérer ces nouvelles contraintes. Ensuite, donne-moi le code React Native pour modifier l'écran d'inscription.**
+**6. Assistant Cognitif Évolutif (IA Administrateur)**
+
+* **Objectif :** Doter le tableau de bord administrateur d'un véritable copilote intelligent capable d'évoluer, d'analyser les tendances, de suggérer des décisions et d'automatiser les réponses aux utilisateurs.
+* **Fonctionnalités clés :**
+  - **Agent de Tri Cognitif :** Analyser automatiquement l'humeur/l'intention des messages reçus par les membres et rédiger des suggestions de réponses ("Réponse Proposée par IA").
+  - **Apprentissage Quotidien :** L'IA mémorise les habitudes de validation de l'administrateur pour alerter automatiquement sur les "anomalies" de trafic ou de téléchargement (ex: pic soudain de téléchargement sur une app douteuse).
+  - **Copilote du Périple :** Un widget persistant dans le dashboard admin permettant à l'administrateur de demander en langage naturel "Quelles sont les apps les plus populaires cette semaine ?" ou "Prépare un message groupé pour annoncer la maintenance".
+
+**Pour commencer, fournis-moi la structure des tables Supabase mises à jour (profils, applications, abonnements) pour gérer ces nouvelles contraintes. Ensuite, donne-moi le code React pour modifier l'écran d'inscription.**
