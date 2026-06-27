@@ -8,6 +8,11 @@ import EditApp from './pages/admin/EditApp';
 import AdminLayout from './components/layout/AdminLayout';
 import ErrorBoundary from './components/ErrorBoundary';
 import UserAuth from './pages/UserAuth';
+import Profile from './pages/user/Profile';
+import Downloads from './pages/user/Downloads';
+import Settings from './pages/user/Settings';
+import Support from './pages/user/Support';
+import About from './pages/user/About';
 import { useEffect } from 'react';
 import { supabase } from './lib/supabase';
 import { Toaster } from 'react-hot-toast';
@@ -53,6 +58,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/app/:slug" element={<AppDetails />} />
           <Route path="/auth" element={<UserAuth />} />
+          <Route path="/profil" element={<Profile />} />
+          <Route path="/mes-telechargements" element={<Downloads />} />
+          <Route path="/parametres" element={<Settings />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/a-propos" element={<About />} />
+          <Route path="/cgu" element={<About />} />
           
           {/* Routes Admin */}
           <Route path="/admin/login" element={<Login />} />

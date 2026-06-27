@@ -185,22 +185,22 @@ export default function Navbar() {
         <div className="flex-1 overflow-y-auto py-4">
           {user ? (
             <div className="space-y-1 px-3">
-              <Link to="/profile" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+              <Link to="/profil" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
                 <div className="flex items-center gap-3"><User className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Afficher le profil</span></div>
                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-indigo-600" />
               </Link>
-              <Link to="/downloads" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+              <Link to="/mes-telechargements" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
                 <div className="flex items-center gap-3"><CheckCheck className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Mes téléchargements</span></div>
                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-indigo-600" />
               </Link>
               <div className="my-4 border-t border-gray-100"></div>
-              <Link to="/settings" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+              <Link to="/parametres" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
                 <div className="flex items-center gap-3"><Settings className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Paramètres</span></div>
               </Link>
               <Link to="/support" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
                 <div className="flex items-center gap-3"><HelpCircle className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Aide & Support</span></div>
               </Link>
-              <Link to="/about" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+              <Link to="/a-propos" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
                 <div className="flex items-center gap-3"><Info className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">À propos & Conditions</span></div>
               </Link>
             </div>
