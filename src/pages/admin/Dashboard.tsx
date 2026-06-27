@@ -13,6 +13,11 @@ export default function Dashboard() {
   const [comments, setComments] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
 
+  // Reply state
+  const [replyingTo, setReplyingTo] = useState<any | null>(null);
+  const [replyContent, setReplyContent] = useState('');
+  const [isSendingReply, setIsSendingReply] = useState(false);
+
   useEffect(() => {
     fetchStats();
     fetchMessages();
@@ -32,13 +37,48 @@ export default function Dashboard() {
   };
 
   const fetchMessages = async () => {
-    const { data } = await supabase.from('messages').select('*, profiles(username, avatar_url)').order('created_at', { ascending: false });
+    // Ne charger que les messages destinés à l'admin (receiver_id est null)
+    const { data } = await supabase.from('messages').select('*, profiles(username, avatar_url)').is('receiver_id', null).order('created_at', { ascending: false });
     if (data) setMessages(data);
   };
 
   const fetchComments = async () => {
     const { data } = await supabase.from('comments').select('app_id, rating');
     if (data) setComments(data);
+  };
+
+  const handleReplyClick = (msg: any) => {
+    setReplyingTo(msg);
+    setReplyContent('');
+  };
+
+  const submitReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!replyingTo || !replyContent.trim()) return;
+    
+    setIsSendingReply(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Non authentifié");
+
+      const { error } = await supabase.from('messages').insert({
+        sender_id: user.id,
+        receiver_id: replyingTo.sender_id, // L'admin répond à l'expéditeur d'origine
+        subject: `Re: ${replyingTo.subject}`,
+        content: replyContent
+      });
+
+      if (error) throw error;
+      
+      setReplyingTo(null);
+      setReplyContent('');
+      alert("Réponse envoyée avec succès au membre !");
+    } catch (e) {
+      console.error(e);
+      alert("Erreur lors de l'envoi de la réponse.");
+    } finally {
+      setIsSendingReply(false);
+    }
   };
 
   const handleDelete = async (id: string, title: string) => {
@@ -180,7 +220,18 @@ export default function Dashboard() {
                     <span className="text-xs text-gray-500">{new Date(msg.created_at).toLocaleDateString('fr-FR')}</span>
                   </div>
                   <div className="font-medium text-gray-900 mb-1 text-sm">{msg.subject}</div>
-                  <p className="text-gray-600 text-sm">{msg.content}</p>
+                  <p className="text-gray-600 text-sm mb-3">{msg.content}</p>
+                  
+                  {/* Reply Button */}
+                  <div className="flex justify-end mt-2 pt-2 border-t border-gray-200">
+                    <button 
+                      onClick={() => handleReplyClick(msg)}
+                      className="text-xs font-medium text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition-colors"
+                    >
+                      <MessageSquare className="w-3 h-3" />
+                      Répondre
+                    </button>
+                  </div>
                 </div>
               ))
             )}
@@ -224,6 +275,45 @@ export default function Dashboard() {
           </table>
         </div>
       </div>
+
+      {/* Admin Reply Modal */}
+      {replyingTo && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <div className="bg-gray-800 rounded-2xl w-full max-w-md border border-gray-700 shadow-2xl overflow-hidden">
+            <div className="flex justify-between items-center p-6 border-b border-gray-700">
+              <h3 className="text-xl font-bold text-white">Répondre à {replyingTo.profiles?.username}</h3>
+              <button onClick={() => setReplyingTo(null)} className="text-gray-400 hover:text-white transition-colors">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            
+            <form onSubmit={submitReply} className="p-6 space-y-4">
+              <div className="bg-gray-900/50 p-3 rounded-lg border border-gray-700 mb-4">
+                <div className="text-xs text-gray-400 mb-1">Message original :</div>
+                <div className="text-sm text-gray-300 italic">"{replyingTo.content}"</div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Votre réponse</label>
+                <textarea
+                  value={replyContent}
+                  onChange={e => setReplyContent(e.target.value)}
+                  className="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 px-4 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none min-h-[120px]"
+                  placeholder="Écrivez votre réponse ici..."
+                  required
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                disabled={isSendingReply || !replyContent.trim()}
+                className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded-xl shadow transition-colors flex items-center justify-center gap-2 mt-4"
+              >
+                {isSendingReply ? 'Envoi...' : 'Envoyer la réponse'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
