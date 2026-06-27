@@ -102,6 +102,16 @@ export default function Dashboard() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Non authentifié");
 
+      if (!replyingTo.sender_id) {
+        throw new Error("Impossible de répondre : L'expéditeur d'origine est inconnu (message anonyme).");
+      }
+
+      // S'assurer que le profil de l'admin existe (fallback sécurité)
+      const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
+      if (!profile) {
+        await supabase.from('profiles').insert({ id: user.id, username: user.email?.split('@')[0] || 'Admin' });
+      }
+
       const { error } = await supabase.from('messages').insert({
         sender_id: user.id,
         receiver_id: replyingTo.sender_id,
@@ -114,9 +124,9 @@ export default function Dashboard() {
       setReplyingTo(null);
       setReplyContent('');
       alert("Réponse envoyée avec succès au membre !");
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      alert("Erreur lors de l'envoi de la réponse.");
+      alert(`Erreur lors de l'envoi de la réponse : ${e.message || JSON.stringify(e)}`);
     } finally {
       setIsSendingReply(false);
     }
