@@ -38,8 +38,7 @@ export default function Profile() {
       const { error } = await supabase.from('profiles').upsert({
         id: user.id,
         username: profile.username,
-        avatar_url: profile.avatar_url,
-        updated_at: new Date().toISOString()
+        avatar_url: profile.avatar_url
       });
       if (error) throw error;
       toast.success("Profil mis à jour avec succès !");
