@@ -27,6 +27,11 @@ https://madapps-pro.vercel.app
 
 ********************
 
+https://qrzpfhssavhrmsuebwxz.supabase.co/auth/v1/callback
+
+ID CLIENT GOOGLE CLOUD :613667517715-t5plrkedm4gf0k16v3cqcth212spugga.apps.googleusercontent.com
+***********************
+
 je veux que :
 *les membres puisse laisser des commentaires
 *je puisse voire le nombre de visiteur par jours 
