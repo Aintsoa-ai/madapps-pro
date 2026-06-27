@@ -1,38 +1,56 @@
-import { Search, Menu, User, Bell, X, Check, CheckCheck, MessageSquare } from 'lucide-react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { Search, Menu, User, Bell, X, Check, CheckCheck, MessageSquare, Settings, HelpCircle, Info, LogOut, UserMinus, ChevronRight } from 'lucide-react';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { toast } from 'react-hot-toast';
 
 export default function Navbar() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialQuery = searchParams.get('q') || '';
   const [inputValue, setInputValue] = useState(initialQuery);
   const [user, setUser] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showInbox, setShowInbox] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [inboxMessages, setInboxMessages] = useState<any[]>([]);
 
   // Reply state
   const [replyingTo, setReplyingTo] = useState<any | null>(null);
   const [replyContent, setReplyContent] = useState('');
   const [isSendingReply, setIsSendingReply] = useState(false);
-  const [isTyping, setIsTyping] = useState(false); // Typing indicator state (stub for UI)
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
-      if (user) fetchUserMessages(user.id);
+      if (user) {
+        fetchUserMessages(user.id);
+        fetchUserProfile(user.id);
+      }
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
-      if (session?.user) fetchUserMessages(session.user.id);
-      else { setUnreadCount(0); setInboxMessages([]); }
+      if (session?.user) {
+        fetchUserMessages(session.user.id);
+        fetchUserProfile(session.user.id);
+      }
+      else { 
+        setUnreadCount(0); 
+        setInboxMessages([]); 
+        setUserProfile(null);
+      }
     });
 
     return () => authListener.subscription.unsubscribe();
   }, []);
+
+  const fetchUserProfile = async (userId: string) => {
+    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
+    if (data) setUserProfile(data);
+  };
 
   const fetchUserMessages = async (userId: string) => {
     const { data, error } = await supabase
@@ -65,7 +83,7 @@ export default function Navbar() {
     try {
       const { error } = await supabase.from('messages').insert({
         sender_id: user.id,
-        receiver_id: null, // null means it's for the Admin
+        receiver_id: null,
         subject: `Re: ${replyingTo.subject}`,
         content: replyContent
       });
@@ -83,7 +101,34 @@ export default function Navbar() {
     }
   };
 
-  // Simulate typing animation
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setShowSidebar(false);
+    toast.success("Déconnexion réussie");
+    navigate('/');
+  };
+
+  const handleDeleteAccount = async () => {
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <p className="font-semibold text-gray-900">Suppression de compte</p>
+        <p className="text-sm text-gray-600">Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cette action effacera toutes vos données.</p>
+        <div className="flex gap-2 justify-end mt-2">
+          <button onClick={() => toast.dismiss(t.id)} className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md">Annuler</button>
+          <button onClick={async () => {
+            toast.dismiss(t.id);
+            // Delete user data and signOut (Full deletion requires Admin API or edge function, but we can clear profile and sign out for now)
+            if (user) await supabase.from('profiles').delete().eq('id', user.id);
+            await supabase.auth.signOut();
+            setShowSidebar(false);
+            toast.success("Compte supprimé avec succès.");
+            navigate('/');
+          }} className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-md">Supprimer</button>
+        </div>
+      </div>
+    ), { duration: 10000 });
+  };
+
   useEffect(() => {
     if (replyContent.length > 0) {
       setIsTyping(true);
@@ -110,15 +155,88 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <>
+      {/* Overlay du Sidebar */}
+      {showSidebar && (
+        <div className="fixed inset-0 bg-black/50 z-[60] transition-opacity" onClick={() => setShowSidebar(false)}></div>
+      )}
+
+      {/* Sidebar Mobile/Desktop */}
+      <div className={`fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col ${showSidebar ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-start">
           <div className="flex items-center gap-4">
-            <Menu className="h-6 w-6 text-gray-600 hover:text-gray-900 cursor-pointer md:hidden" />
-            <Link to="/" className="text-xl font-medium text-gray-700 flex items-center gap-2">
-              <span className="text-indigo-600 font-bold text-2xl">▶</span>
-              AintStore
-            </Link>
+            <div className="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 border-2 border-white shadow-sm overflow-hidden">
+              {userProfile?.avatar_url ? (
+                <img src={userProfile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-6 h-6" />
+              )}
+            </div>
+            <div>
+              <h2 className="font-bold text-gray-900 text-lg">{userProfile?.username || user?.email?.split('@')[0] || 'Invité'}</h2>
+              <p className="text-sm text-gray-500">{user?.email || 'Non connecté'}</p>
+            </div>
+          </div>
+          <button onClick={() => setShowSidebar(false)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full transition">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto py-4">
+          {user ? (
+            <div className="space-y-1 px-3">
+              <Link to="/profile" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+                <div className="flex items-center gap-3"><User className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Afficher le profil</span></div>
+                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-indigo-600" />
+              </Link>
+              <Link to="/downloads" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+                <div className="flex items-center gap-3"><CheckCheck className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Mes téléchargements</span></div>
+                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-indigo-600" />
+              </Link>
+              <div className="my-4 border-t border-gray-100"></div>
+              <Link to="/settings" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+                <div className="flex items-center gap-3"><Settings className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Paramètres</span></div>
+              </Link>
+              <Link to="/support" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+                <div className="flex items-center gap-3"><HelpCircle className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">Aide & Support</span></div>
+              </Link>
+              <Link to="/about" onClick={() => setShowSidebar(false)} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition group">
+                <div className="flex items-center gap-3"><Info className="w-5 h-5 text-gray-400 group-hover:text-indigo-600" /> <span className="font-medium">À propos & Conditions</span></div>
+              </Link>
+            </div>
+          ) : (
+            <div className="px-6 py-4">
+              <p className="text-gray-500 text-sm mb-4">Connectez-vous pour accéder à votre profil et vos téléchargements.</p>
+              <Link to="/auth" onClick={() => setShowSidebar(false)} className="block w-full text-center bg-indigo-600 text-white font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition">
+                Se connecter
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {user && (
+          <div className="p-4 border-t border-gray-100 space-y-2">
+            <button onClick={handleLogout} className="w-full flex items-center gap-3 p-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition font-medium">
+              <LogOut className="w-5 h-5 text-gray-400" /> Se déconnecter
+            </button>
+            <button onClick={handleDeleteAccount} className="w-full flex items-center gap-3 p-3 rounded-xl text-red-600 hover:bg-red-50 transition font-medium">
+              <UserMinus className="w-5 h-5" /> Supprimer son compte
+            </button>
+          </div>
+        )}
+      </div>
+
+      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-4">
+              <button onClick={() => setShowSidebar(true)} className="p-1 -ml-1 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg">
+                <Menu className="h-6 w-6" />
+              </button>
+              <Link to="/" className="text-xl font-medium text-gray-700 flex items-center gap-2">
+                <span className="text-indigo-600 font-bold text-2xl">▶</span>
+                AintStore
+              </Link>
             
             <div className="hidden md:flex ml-8 gap-6">
               <span className="text-indigo-600 font-medium border-b-2 border-indigo-600 py-5">Applications</span>
@@ -256,5 +374,6 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }
