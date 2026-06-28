@@ -62,19 +62,7 @@ export default function Home() {
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        {/* Barre de recherche professionnelle */}
-        <div className="relative max-w-2xl mx-auto mb-10">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            value={localSearch}
-            onChange={handleSearchChange}
-            className="block w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm hover:shadow-md text-base"
-            placeholder="Rechercher une application, un développeur..."
-          />
-        </div>
+
 
         {/* Section Catalogue */}
         <section>
