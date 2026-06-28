@@ -67,7 +67,12 @@ export function useAppInteractions(app: any | null, user: User | null) {
       }
       
       // 2. Tentative silencieuse d'insertion dans la base de données (si la table existe)
-      supabase.from('user_downloads').insert({ user_id: user.id, app_id: app.id }).then().catch(() => {});
+      const tryInsert = async () => {
+        try {
+          await supabase.from('user_downloads').insert({ user_id: user.id, app_id: app.id });
+        } catch (e) {}
+      };
+      tryInsert();
     }
   };
 
