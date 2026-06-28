@@ -90,28 +90,21 @@ export default function Settings() {
     setShowPrivacyModal(false);
   };
 
-  // Classes dynamiques pour le dark mode
-  const bgClass = settings.darkMode ? "bg-gray-900" : "bg-gray-50";
-  const cardBgClass = settings.darkMode ? "bg-gray-800 border-gray-700 divide-gray-700" : "bg-white border-gray-100 divide-gray-100";
-  const textTitleClass = settings.darkMode ? "text-white" : "text-gray-900";
-  const textSubClass = settings.darkMode ? "text-gray-400" : "text-gray-500";
-  const hoverClass = settings.darkMode ? "hover:bg-gray-700/50" : "hover:bg-gray-50";
-
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${bgClass}`}>
+    <div className="min-h-screen transition-colors duration-300 bg-gray-50">
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className={`text-2xl font-bold mb-6 transition-colors duration-300 ${textTitleClass}`}>Paramètres</h1>
+        <h1 className="text-2xl font-bold mb-6 transition-colors duration-300 text-gray-900">Paramètres</h1>
         
-        <div className={`rounded-2xl shadow-sm border overflow-hidden divide-y transition-colors duration-300 ${cardBgClass}`}>
-          <div className={`p-6 flex items-center justify-between transition cursor-pointer ${hoverClass}`} onClick={() => toggleSetting('notifications')}>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100 transition-colors duration-300">
+          <div className="p-6 flex items-center justify-between transition cursor-pointer hover:bg-gray-50" onClick={() => toggleSetting('notifications')}>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
                 <Bell className="w-5 h-5" />
               </div>
               <div>
-                <h3 className={`font-semibold transition-colors duration-300 ${textTitleClass}`}>Notifications</h3>
-                <p className={`text-sm transition-colors duration-300 ${textSubClass}`}>M'alerter lors des réponses et des nouveautés</p>
+                <h3 className="font-semibold transition-colors duration-300 text-gray-900">Notifications</h3>
+                <p className="text-sm transition-colors duration-300 text-gray-500">M'alerter lors des réponses et des nouveautés</p>
               </div>
             </div>
             <div className={`w-12 h-6 rounded-full transition-colors duration-300 ${settings.notifications ? 'bg-indigo-600' : 'bg-gray-300'} relative`}>
@@ -119,14 +112,14 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className={`p-6 flex items-center justify-between transition cursor-pointer ${hoverClass}`} onClick={() => toggleSetting('darkMode')}>
+          <div className="p-6 flex items-center justify-between transition cursor-pointer hover:bg-gray-50" onClick={() => toggleSetting('darkMode')}>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
                 <Moon className="w-5 h-5" />
               </div>
               <div>
-                <h3 className={`font-semibold transition-colors duration-300 ${textTitleClass}`}>Mode sombre</h3>
-                <p className={`text-sm transition-colors duration-300 ${textSubClass}`}>Thème visuel de l'interface de cette page</p>
+                <h3 className="font-semibold transition-colors duration-300 text-gray-900">Mode sombre</h3>
+                <p className="text-sm transition-colors duration-300 text-gray-500">Thème visuel global de la plateforme</p>
               </div>
             </div>
             <div className={`w-12 h-6 rounded-full transition-colors duration-300 ${settings.darkMode ? 'bg-indigo-600' : 'bg-gray-300'} relative`}>
@@ -134,14 +127,14 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className={`p-6 flex items-center justify-between transition cursor-pointer ${hoverClass}`} onClick={() => toggleSetting('autoUpdate')}>
+          <div className="p-6 flex items-center justify-between transition cursor-pointer hover:bg-gray-50" onClick={() => toggleSetting('autoUpdate')}>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
                 <Smartphone className="w-5 h-5" />
               </div>
               <div>
-                <h3 className={`font-semibold transition-colors duration-300 ${textTitleClass}`}>Mises à jour automatiques</h3>
-                <p className={`text-sm transition-colors duration-300 ${textSubClass}`}>Télécharger automatiquement en WiFi</p>
+                <h3 className="font-semibold transition-colors duration-300 text-gray-900">Mises à jour automatiques</h3>
+                <p className="text-sm transition-colors duration-300 text-gray-500">Télécharger automatiquement en WiFi</p>
               </div>
             </div>
             <div className={`w-12 h-6 rounded-full transition-colors duration-300 ${settings.autoUpdate ? 'bg-indigo-600' : 'bg-gray-300'} relative`}>
@@ -155,8 +148,8 @@ export default function Settings() {
                 <Shield className="w-5 h-5" />
               </div>
               <div>
-                <h3 className={`font-semibold transition-colors duration-300 ${textTitleClass}`}>Sécurité & Confidentialité</h3>
-                <p className={`text-sm transition-colors duration-300 ${textSubClass}`}>Gérer l'accès à vos données</p>
+                <h3 className="font-semibold transition-colors duration-300 text-gray-900">Sécurité & Confidentialité</h3>
+                <p className="text-sm transition-colors duration-300 text-gray-500">Gérer l'accès à vos données</p>
               </div>
             </div>
             <button 
@@ -172,17 +165,17 @@ export default function Settings() {
       {/* Modal Sécurité & Confidentialité */}
       {showPrivacyModal && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className={`${settings.darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'} rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border ${settings.darkMode ? 'border-gray-700' : 'border-gray-100'} p-6`}>
+          <div className="bg-white text-gray-900 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-gray-100 p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold flex items-center gap-2">
                 <Shield className="w-6 h-6 text-red-500" /> Sécurité & Confidentialité
               </h2>
-              <button onClick={() => setShowPrivacyModal(false)} className={`p-2 rounded-full ${settings.darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} transition-colors`}>
+              <button onClick={() => setShowPrivacyModal(false)} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <p className={`mb-6 text-sm ${settings.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="mb-6 text-sm text-gray-600">
               Gérez vos données personnelles. Vous pouvez télécharger une copie de vos préférences ou effacer vos données locales.
             </p>
 
@@ -196,7 +189,7 @@ export default function Settings() {
               
               <button 
                 onClick={handleClearCache}
-                className={`w-full flex items-center justify-center gap-2 font-medium py-3 px-4 rounded-xl transition-colors border ${settings.darkMode ? 'border-gray-700 hover:bg-gray-700 text-red-400' : 'border-gray-200 hover:bg-red-50 text-red-600'}`}
+                className="w-full flex items-center justify-center gap-2 font-medium py-3 px-4 rounded-xl transition-colors border border-gray-200 hover:bg-red-50 text-red-600"
               >
                 <Trash2 className="w-5 h-5" /> Effacer le cache local
               </button>

@@ -37,6 +37,16 @@ function App() {
       }
     };
     
+    // Appliquer le dark mode globalement
+    const savedSettings = localStorage.getItem('userSettings');
+    if (savedSettings) {
+      try {
+        const { darkMode } = JSON.parse(savedSettings);
+        if (darkMode) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    }
+
     // On track une visite par session pour éviter le spam (basique)
     if (!sessionStorage.getItem('visited_today')) {
       trackVisitor();
