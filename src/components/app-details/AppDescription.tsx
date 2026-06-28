@@ -33,8 +33,14 @@ export default function AppDescription({ app }: AppDescriptionProps) {
               ))
             ) : (
               [1, 2, 3].map(i => (
-                <div key={i} className="w-64 h-40 flex-shrink-0 bg-gray-800 rounded-xl overflow-hidden snap-center border border-gray-700">
-                  <img src={app.banner_url || ''} alt={`Screenshot ${i}`} className="w-full h-full object-cover opacity-50 grayscale" />
+                <div 
+                  key={i} 
+                  className="w-64 h-40 flex-shrink-0 bg-gray-800 rounded-xl overflow-hidden snap-center border border-gray-700 cursor-pointer group"
+                  onClick={() => {
+                    if (app.banner_url) setSelectedImage(app.banner_url);
+                  }}
+                >
+                  <img src={app.banner_url || ''} alt={`Screenshot ${i}`} className="w-full h-full object-cover opacity-50 grayscale transition-transform group-hover:scale-105" />
                 </div>
               ))
             )}
