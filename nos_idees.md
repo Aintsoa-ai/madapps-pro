@@ -23,6 +23,13 @@
 - [x] Dashboard Admin : Mise à jour de la table des membres pour afficher l'Avatar, le Pseudo, et une pastille verte "En ligne" (style Facebook/Messenger).
 - [x] Déploiements Continus : Le projet a été testé, buildé (`vite build`) et déployé avec succès sur Vercel à chaque étape clé.
 
+## Ce qui a été fait (Aujourd'hui - 28 Juin 2026)
+- [x] **Refonte UI des Captures d'Écran** : Les images sur la page `AppDetails` s'affichent désormais au format portrait (ratio de téléphone) pour éviter le rognage inesthétique.
+- [x] **Affichage Responsive (Style Play Store)** : Les miniatures s'adaptent selon l'appareil (petites sur mobile pour en afficher 3, plus grandes sur ordinateur).
+- [x] **Navigation Carrousel** : Ajout de flèches de défilement (gauche/droite) pour naviguer facilement dans les captures d'écran sur ordinateur.
+- [x] **Mode Plein Écran** : Cliquer sur une capture d'écran permet de l'afficher en plein écran avec ses vraies proportions (`object-contain`).
+- [x] **Correction de Bug & Sécurité (RLS)** : Correction d'une "erreur silencieuse" lors de la publication de commentaires. Création et application des règles de sécurité Supabase (RLS) pour autoriser l'insertion de profils et de commentaires par les utilisateurs authentifiés.
+- [x] **Déploiement** : Push et synchronisation en direct avec Vercel pour la mise en production immédiate.
 ## Ce qui reste à accomplir (Idées pour la suite)
 - [ ] **Règle du Boy Scout & Clean Architecture (Urgent)** : Refactoriser `AppDetails.tsx` (plus de 430 lignes) et `Dashboard.tsx` (plus de 470 lignes) en sous-composants (`<AppBanner />`, `<CommentSection />`, `<UserList />`) AVANT d'y ajouter la moindre nouvelle fonctionnalité.
 - [ ] **Intelligence Cognitive (IA)** : Intégrer la vision d'un "Assistant Cognitif IA" dans le Dashboard Administrateur pour analyser les téléchargements et pré-trier le support client.
