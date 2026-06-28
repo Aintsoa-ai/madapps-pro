@@ -73,11 +73,10 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            
-            <div className="mt-20">
+            <div className="pt-24">
               <form onSubmit={handleSave} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email (Non modifiable)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email <span className="text-gray-400 text-xs font-normal">(Non modifiable)</span></label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Mail className="h-5 w-5 text-gray-400" />
