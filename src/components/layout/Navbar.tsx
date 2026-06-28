@@ -140,8 +140,15 @@ export default function Navbar() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (inputValue) setSearchParams({ q: inputValue }, { replace: true });
-      else setSearchParams({}, { replace: true });
+      setSearchParams(prev => {
+        const newParams = new URLSearchParams(prev);
+        if (inputValue) {
+          newParams.set('q', inputValue);
+        } else {
+          newParams.delete('q');
+        }
+        return newParams;
+      }, { replace: true });
     }, 300);
     return () => clearTimeout(timer);
   }, [inputValue, setSearchParams]);
