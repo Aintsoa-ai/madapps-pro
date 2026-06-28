@@ -1,7 +1,7 @@
 import Navbar from '../components/layout/Navbar';
 import AppCard from '../components/AppCard';
 import { useApps } from '../hooks/useApps';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -24,16 +24,6 @@ export default function Home() {
       else newParams.set('category', category);
       return newParams;
     });
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setLocalSearch(val);
-    if (val) {
-      setSearchParams({ q: val });
-    } else {
-      setSearchParams({});
-    }
   };
 
   // Extraire les catégories uniques
