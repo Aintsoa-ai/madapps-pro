@@ -86,22 +86,31 @@ export function useAppInteractions(app: any | null, user: User | null) {
     try {
       // S'assurer que le profil existe (fallback sécurité)
       const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
+      
       if (!profile) {
-        await supabase.from('profiles').insert({ id: user.id, username: user.email?.split('@')[0] || 'Anonyme' });
+        const { error: profileError } = await supabase.from('profiles').insert({ id: user.id, username: user.email?.split('@')[0] || 'Anonyme' });
+        if (profileError) {
+          console.error("Erreur création profil:", profileError);
+          // On continue quand même car RLS peut bloquer l'insert mais on veut autoriser le commentaire
+        }
       }
 
-      await supabase.from('comments').insert({
+      const { error: commentError } = await supabase.from('comments').insert({
         app_id: app.id,
         user_id: user.id,
         content: newComment,
         rating: rating
       });
+
+      if (commentError) throw commentError;
+
       setNewComment('');
       setRating(5);
-      fetchComments();
-    } catch (e) {
-      console.error(e);
-      toast.error("Erreur lors de la publication du commentaire.");
+      await fetchComments();
+      toast.success("Commentaire publié avec succès !");
+    } catch (e: any) {
+      console.error("Erreur d'insertion du commentaire:", e);
+      toast.error(`Erreur: ${e.message || 'Impossible de publier le commentaire.'}`);
     } finally {
       setIsSubmitting(false);
     }
