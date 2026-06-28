@@ -20,7 +20,6 @@ export default function Support() {
 
       const { error } = await supabase.from('messages').insert({
         sender_id: user.id,
-        receiver_id: null, // Admin
         subject: `[SUPPORT] ${subject}`,
         content: message
       });

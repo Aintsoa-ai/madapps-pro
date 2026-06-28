@@ -239,10 +239,10 @@ export default function Navbar() {
               </Link>
             
             <div className="hidden md:flex ml-8 gap-6">
-              <span className="text-indigo-600 font-medium border-b-2 border-indigo-600 py-5">Applications</span>
-              <span className="text-gray-500 hover:text-gray-700 font-medium py-5 cursor-pointer">Utilitaires</span>
-              <span className="text-gray-500 hover:text-gray-700 font-medium py-5 cursor-pointer">Jeux</span>
-              <span className="text-gray-500 hover:text-gray-700 font-medium py-5 cursor-pointer">Social</span>
+              <Link to="/?category=Applications" className="text-indigo-600 font-medium border-b-2 border-indigo-600 py-5">Applications</Link>
+              <Link to="/?category=Utilitaires" className="text-gray-500 hover:text-gray-700 font-medium py-5 cursor-pointer">Utilitaires</Link>
+              <Link to="/?category=Jeux" className="text-gray-500 hover:text-gray-700 font-medium py-5 cursor-pointer">Jeux</Link>
+              <Link to="/?category=Social" className="text-gray-500 hover:text-gray-700 font-medium py-5 cursor-pointer">Social</Link>
             </div>
           </div>
           

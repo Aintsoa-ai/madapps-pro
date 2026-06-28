@@ -9,12 +9,22 @@ export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [localSearch, setLocalSearch] = useState(searchParams.get('q') || '');
   const { apps, loading, error } = useApps();
-  const [selectedCategory, setSelectedCategory] = useState<string>('Toutes');
+  const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('category') || 'Toutes');
 
-  // Sync localSearch when URL changes
+  // Sync state when URL changes
   useEffect(() => {
     setLocalSearch(searchParams.get('q') || '');
+    setSelectedCategory(searchParams.get('category') || 'Toutes');
   }, [searchParams]);
+
+  const handleCategoryClick = (category: string) => {
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      if (category === 'Toutes') newParams.delete('category');
+      else newParams.set('category', category);
+      return newParams;
+    });
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -79,7 +89,7 @@ export default function Home() {
               {categories.map(category => (
                 <button
                   key={category as string}
-                  onClick={() => setSelectedCategory(category as string)}
+                  onClick={() => handleCategoryClick(category as string)}
                   className={`whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
                     selectedCategory === category
                       ? 'bg-indigo-50 text-indigo-600'
