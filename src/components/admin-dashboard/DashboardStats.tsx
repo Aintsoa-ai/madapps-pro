@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Users, Download, MessageSquare, Activity, TrendingUp } from 'lucide-react';
 
 interface DashboardStatsProps {
