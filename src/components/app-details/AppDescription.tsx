@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { X } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface AppDescriptionProps {
   app: any;
@@ -7,6 +7,15 @@ interface AppDescriptionProps {
 
 export default function AppDescription({ app }: AppDescriptionProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { clientWidth } = scrollRef.current;
+      const scrollAmount = direction === 'left' ? -clientWidth / 2 : clientWidth / 2;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -20,30 +29,51 @@ export default function AppDescription({ app }: AppDescriptionProps) {
         
         <section>
           <h2 className="text-xl font-bold mb-4 border-b border-gray-800 pb-2">Captures d'écran</h2>
-          <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x scrollbar-hide items-center">
-            {app.screenshots && app.screenshots.length > 0 ? (
-              app.screenshots.map((url: string, idx: number) => (
-                <div 
-                  key={idx} 
-                  className="w-[110px] h-[195px] sm:w-[160px] sm:h-[285px] md:w-[200px] md:h-[355px] flex-shrink-0 bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden snap-center border border-gray-700 cursor-pointer group shadow-lg"
-                  onClick={() => setSelectedImage(url)}
-                >
-                  <img src={url} alt={`Screenshot ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                </div>
-              ))
-            ) : (
-              [1, 2, 3].map(i => (
-                <div 
-                  key={i} 
-                  className="w-[110px] h-[195px] sm:w-[160px] sm:h-[285px] md:w-[200px] md:h-[355px] flex-shrink-0 bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden snap-center border border-gray-700 cursor-pointer group shadow-lg"
-                  onClick={() => {
-                    if (app.banner_url) setSelectedImage(app.banner_url);
-                  }}
-                >
-                  <img src={app.banner_url || ''} alt={`Screenshot ${i}`} className="w-full h-full object-cover opacity-50 grayscale transition-transform duration-300 group-hover:scale-105" />
-                </div>
-              ))
-            )}
+          <div className="relative group/carousel">
+            {/* Bouton gauche */}
+            <button 
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-10 bg-gray-800/90 text-white p-2 rounded-full shadow-lg border border-gray-700 opacity-0 group-hover/carousel:opacity-100 transition-opacity hidden md:flex hover:bg-gray-700"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <div 
+              ref={scrollRef}
+              className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x scrollbar-hide items-center relative"
+            >
+              {app.screenshots && app.screenshots.length > 0 ? (
+                app.screenshots.map((url: string, idx: number) => (
+                  <div 
+                    key={idx} 
+                    className="w-[110px] h-[195px] sm:w-[160px] sm:h-[285px] md:w-[200px] md:h-[355px] flex-shrink-0 bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden snap-center border border-gray-700 cursor-pointer group shadow-lg"
+                    onClick={() => setSelectedImage(url)}
+                  >
+                    <img src={url} alt={`Screenshot ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  </div>
+                ))
+              ) : (
+                [1, 2, 3].map(i => (
+                  <div 
+                    key={i} 
+                    className="w-[110px] h-[195px] sm:w-[160px] sm:h-[285px] md:w-[200px] md:h-[355px] flex-shrink-0 bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden snap-center border border-gray-700 cursor-pointer group shadow-lg"
+                    onClick={() => {
+                      if (app.banner_url) setSelectedImage(app.banner_url);
+                    }}
+                  >
+                    <img src={app.banner_url || ''} alt={`Screenshot ${i}`} className="w-full h-full object-cover opacity-50 grayscale transition-transform duration-300 group-hover:scale-105" />
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Bouton droit */}
+            <button 
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-10 bg-gray-800/90 text-white p-2 rounded-full shadow-lg border border-gray-700 opacity-0 group-hover/carousel:opacity-100 transition-opacity hidden md:flex hover:bg-gray-700"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
         </section>
       </div>
