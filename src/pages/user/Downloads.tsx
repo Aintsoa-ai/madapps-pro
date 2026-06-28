@@ -15,9 +15,6 @@ export default function Downloads() {
   const fetchDownloads = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      // Pour l'instant, MadaStack n'a pas de table user_downloads stricte.
-      // Si la table 'user_downloads' existe, on la requête.
-      // Sinon, on simule ou on utilise une requête appropriée pour le futur.
       try {
         const { data, error } = await supabase
           .from('user_downloads')
@@ -25,11 +22,18 @@ export default function Downloads() {
           .eq('user_id', user.id)
           .order('downloaded_at', { ascending: false });
         
-        if (!error && data) {
+        if (!error && data && data.length > 0) {
           setDownloads(data.map(d => d.apps).filter(Boolean));
+          setLoading(false);
+          return;
         }
+        throw new Error("Fallback local");
       } catch (e) {
-        console.log("Table user_downloads n'existe pas encore. Affichage vide.");
+        // Fallback local 100% fonctionnel si la table DB n'existe pas encore
+        const localKey = `downloads_${user.id}`;
+        const saved = JSON.parse(localStorage.getItem(localKey) || '[]');
+        saved.sort((a: any, b: any) => new Date(b.downloaded_at).getTime() - new Date(a.downloaded_at).getTime());
+        setDownloads(saved);
       }
     }
     setLoading(false);

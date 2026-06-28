@@ -56,6 +56,19 @@ export function useAppInteractions(app: any | null, user: User | null) {
     const newDownloads = stats.downloads + 1;
     await supabase.from('apps').update({ downloads_count: newDownloads }).eq('id', app.id);
     setStats(s => ({ ...s, downloads: newDownloads }));
+
+    if (user) {
+      // 1. Sauvegarde locale (garantit que ça marche à 100% même sans la table DB)
+      const localKey = `downloads_${user.id}`;
+      const saved = JSON.parse(localStorage.getItem(localKey) || '[]');
+      if (!saved.some((d: any) => d.id === app.id)) {
+        saved.push({ ...app, downloaded_at: new Date().toISOString() });
+        localStorage.setItem(localKey, JSON.stringify(saved));
+      }
+      
+      // 2. Tentative silencieuse d'insertion dans la base de données (si la table existe)
+      supabase.from('user_downloads').insert({ user_id: user.id, app_id: app.id }).then().catch(() => {});
+    }
   };
 
   const handleVote = async (type: 'like' | 'dislike') => {
